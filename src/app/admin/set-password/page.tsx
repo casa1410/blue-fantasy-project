@@ -13,42 +13,44 @@ export default function SetPasswordPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const supabase = createSupabaseBrowserClient();
-    const url = new URL(window.location.href);
-    const code = url.searchParams.get("code");
-    const errorDescription = url.searchParams.get("error_description");
-
     const invalidLinkMessage =
       "El link de invitación no es válido o ya expiró. Pide que te reenvíen la invitación.";
 
-    async function init() {
-      if (errorDescription) {
-        setError(decodeURIComponent(errorDescription.replace(/\+/g, " ")));
-        setReady(true);
-        return;
-      }
-
-      if (code) {
-        const { error } = await supabase.auth.exchangeCodeForSession(code);
-        if (error) {
-          setError(invalidLinkMessage);
-        } else {
-          window.history.replaceState({}, "", url.pathname);
-        }
-        setReady(true);
-        return;
-      }
-
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (!session) {
-        setError(invalidLinkMessage);
-      }
+    // Supabase redirects recovery/invite links with the result in the URL
+    // *hash* (e.g. #access_token=... on success, or #error=... on failure),
+    // not as a query string, so it never reaches the server.
+    const hashParams = new URLSearchParams(window.location.hash.slice(1));
+    if (hashParams.get("error")) {
+      setError(invalidLinkMessage);
       setReady(true);
+      return;
     }
 
-    init();
+    const supabase = createSupabaseBrowserClient();
+    let settled = false;
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session && !settled) {
+        settled = true;
+        setReady(true);
+      }
+    });
+
+    // Fallback in case the hash didn't contain a session and no auth event fires.
+    const timeout = setTimeout(() => {
+      if (!settled) {
+        settled = true;
+        setError(invalidLinkMessage);
+        setReady(true);
+      }
+    }, 2500);
+
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeout);
+    };
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
