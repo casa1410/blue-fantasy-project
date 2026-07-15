@@ -18,6 +18,7 @@ export function AdminList({
   const [inviting, setInviting] = useState(false);
   const [removingId, setRemovingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [invited, setInvited] = useState<{ email: string; tempPassword: string } | null>(null);
 
   const canRemove = admins.length > 2;
 
@@ -25,8 +26,10 @@ export function AdminList({
     e.preventDefault();
     setInviting(true);
     setError(null);
+    setInvited(null);
     try {
-      await inviteAdmin(email);
+      const { tempPassword } = await inviteAdmin(email);
+      setInvited({ email, tempPassword });
       setEmail("");
       router.refresh();
     } catch (err) {
@@ -71,6 +74,20 @@ export function AdminList({
       </form>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
+
+      {invited && (
+        <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          <p>
+            Se envio una invitacion por correo a <strong>{invited.email}</strong>, pero esos links
+            a veces no llegan a funcionar (Gmail los puede invalidar antes de que se abran).
+            Comparte esta contrasena temporal directamente como respaldo:
+          </p>
+          <p className="mt-2 font-mono text-base">{invited.tempPassword}</p>
+          <p className="mt-2 text-xs">
+            Puede iniciar sesion con esta contrasena y cambiarla luego desde &quot;Mi cuenta&quot;.
+          </p>
+        </div>
+      )}
 
       {!canRemove && (
         <p className="text-sm text-amber-600">

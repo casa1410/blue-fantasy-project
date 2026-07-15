@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminUser } from "@/lib/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase-admin";
 import { getSiteUrl } from "@/lib/site-url";
+import { generateTempPassword } from "@/lib/password";
 
 const MIN_ADMINS = 2;
 const emailSchema = z.string().trim().email("Correo invalido");
@@ -29,7 +30,14 @@ export async function inviteAdmin(email: string) {
     create: { id: data.user.id, email: parsedEmail, role: "admin" },
   });
 
+  // Email link providers (Gmail's link-scanning in particular) can consume the
+  // invite link before the person clicks it, leaving it "expired". Set a temp
+  // password too so there's always a working fallback to share directly.
+  const tempPassword = generateTempPassword();
+  await supabase.auth.admin.updateUserById(data.user.id, { password: tempPassword });
+
   revalidatePath("/admin/admins");
+  return { tempPassword };
 }
 
 export async function removeAdmin(id: string) {

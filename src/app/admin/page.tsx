@@ -28,6 +28,9 @@ export default async function AdminDashboardPage() {
         <Link href="/admin/admins" className="text-sm font-medium text-gray-700 underline">
           Administradores
         </Link>
+        <Link href="/admin/account" className="text-sm font-medium text-gray-700 underline">
+          Mi cuenta
+        </Link>
       </nav>
     </div>
   );
