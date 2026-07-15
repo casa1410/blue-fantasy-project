@@ -27,7 +27,8 @@ model Novel {
   title         String
   slug          String        @unique
   synopsis      String
-  coverImageUrl String?
+  coverImageUrl  String?
+  coverImagePath String?
   genre         String?
   tags          String[]      @default([])
   status        ContentStatus @default(DRAFT)
