@@ -18,9 +18,9 @@ export default async function EditNovelPage({
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-semibold text-gray-900">Editar novela</h1>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <Link
             href={`/admin/novels/${novel.id}/chapters`}
             className="text-sm font-medium text-gray-700 underline"

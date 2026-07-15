@@ -26,7 +26,16 @@ export async function generateMetadata({
   const { slug } = await params;
   const novel = await getNovel(slug);
   if (!novel) return {};
-  return { title: novel.title, description: novel.synopsis };
+  return {
+    title: novel.title,
+    description: novel.synopsis,
+    openGraph: {
+      title: novel.title,
+      description: novel.synopsis,
+      type: "book",
+      images: novel.coverImageUrl ? [{ url: novel.coverImageUrl }] : undefined,
+    },
+  };
 }
 
 export default async function NovelPage({
@@ -44,7 +53,7 @@ export default async function NovelPage({
         Todas las novelas
       </Link>
 
-      <div className="mt-4 flex gap-6">
+      <div className="mt-4 flex flex-col gap-6 sm:flex-row">
         {novel.coverImageUrl && (
           // eslint-disable-next-line @next/next/no-img-element
           <img

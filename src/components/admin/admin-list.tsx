@@ -52,7 +52,7 @@ export function AdminList({
 
   return (
     <div className="space-y-6">
-      <form onSubmit={handleInvite} className="flex items-center gap-3">
+      <form onSubmit={handleInvite} className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <input
           type="email"
           required

@@ -30,7 +30,7 @@ export function ChapterQuickCreateForm({ novelId }: { novelId: string }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center gap-3">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row sm:items-center">
       <input
         type="text"
         value={title}

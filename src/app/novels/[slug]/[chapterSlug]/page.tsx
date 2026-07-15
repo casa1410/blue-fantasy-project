@@ -43,7 +43,16 @@ export async function generateMetadata({
   const { slug, chapterSlug } = await params;
   const data = await getChapterData(slug, chapterSlug);
   if (!data) return {};
-  return { title: `${data.chapter.title} · ${data.novel.title}` };
+  const title = `${data.chapter.title} · ${data.novel.title}`;
+  return {
+    title,
+    openGraph: {
+      title,
+      description: data.novel.synopsis,
+      type: "article",
+      images: data.novel.coverImageUrl ? [{ url: data.novel.coverImageUrl }] : undefined,
+    },
+  };
 }
 
 export default async function ChapterPage({

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,12 +13,28 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteName = "BlueFantasyProject";
+const siteDescription = "Novelas y relatos originales.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: {
-    default: "BlueFantasyProject",
-    template: "%s · BlueFantasyProject",
+    default: siteName,
+    template: `%s · ${siteName}`,
   },
-  description: "Novelas y relatos originales.",
+  description: siteDescription,
+  openGraph: {
+    siteName,
+    title: siteName,
+    description: siteDescription,
+    type: "website",
+    locale: "es_ES",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteName,
+    description: siteDescription,
+  },
 };
 
 export default function RootLayout({

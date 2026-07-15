@@ -45,7 +45,7 @@ export function ReferenceImages({
     <div className="space-y-4">
       <h2 className="text-lg font-medium text-gray-900">Imagenes de referencia</h2>
 
-      <form ref={formRef} action={handleUpload} className="flex items-center gap-3">
+      <form ref={formRef} action={handleUpload} className="flex flex-wrap items-center gap-3">
         <input type="file" name="file" accept="image/*" required className="text-sm" />
         <input
           type="text"
@@ -63,7 +63,7 @@ export function ReferenceImages({
       </form>
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         {images.map((image) => (
           <div key={image.id} className="space-y-1">
             {/* eslint-disable-next-line @next/next/no-img-element */}

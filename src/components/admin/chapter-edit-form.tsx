@@ -42,12 +42,12 @@ export function ChapterEditForm({ novelId, chapter }: Props) {
 
   return (
     <form onSubmit={handleSave} className="space-y-5">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full max-w-md rounded-md border border-gray-300 px-3 py-2 text-sm"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm sm:max-w-md"
         />
         <select
           value={status}
