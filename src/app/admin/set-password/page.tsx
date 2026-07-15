@@ -14,14 +14,41 @@ export default function SetPasswordPage() {
 
   useEffect(() => {
     const supabase = createSupabaseBrowserClient();
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
+    const errorDescription = url.searchParams.get("error_description");
+
+    const invalidLinkMessage =
+      "El link de invitación no es válido o ya expiró. Pide que te reenvíen la invitación.";
+
+    async function init() {
+      if (errorDescription) {
+        setError(decodeURIComponent(errorDescription.replace(/\+/g, " ")));
+        setReady(true);
+        return;
+      }
+
+      if (code) {
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        if (error) {
+          setError(invalidLinkMessage);
+        } else {
+          window.history.replaceState({}, "", url.pathname);
+        }
+        setReady(true);
+        return;
+      }
+
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       if (!session) {
-        setError(
-          "El link de invitación no es válido o ya expiró. Pide que te reenvíen la invitación.",
-        );
+        setError(invalidLinkMessage);
       }
       setReady(true);
-    });
+    }
+
+    init();
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
