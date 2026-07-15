@@ -17,12 +17,9 @@ export default async function HomePage() {
         <div className="max-w-xl text-center lg:text-left">
           <h1 className="font-display text-4xl leading-tight text-balance sm:text-5xl lg:text-6xl">
             Creaciones de ElFrikiSac.
-            <br />
-            Mundos infinitos.
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-(--site-ink-soft)">
-            BlueFantasyProject reúne las novelas y relatos de ElFrikiSac — fantasía, aventura
-            y ciencia ficción tejidas en un mismo multiverso de personajes y misterios.
+            Un recopilatorio de todo lo que escribo.
           </p>
           <Link href="#novelas" className="btn-glow mt-10 inline-flex">
             Explorar novelas
