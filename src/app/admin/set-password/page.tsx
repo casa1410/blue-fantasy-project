@@ -21,6 +21,10 @@ export default function SetPasswordPage() {
     // not as a query string, so it never reaches the server.
     const hashParams = new URLSearchParams(window.location.hash.slice(1));
     if (hashParams.get("error")) {
+      // window.location must be read client-side only (avoids a hydration
+      // mismatch vs. the server-rendered loading state), so these can't move
+      // out of the effect.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setError(invalidLinkMessage);
       setReady(true);
       return;

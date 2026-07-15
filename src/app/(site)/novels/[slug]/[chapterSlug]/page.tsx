@@ -67,22 +67,22 @@ export default async function ChapterPage({
   const { novel, chapter, prevChapter, nextChapter } = data;
 
   return (
-    <main className="mx-auto max-w-2xl flex-1 px-4 py-16">
-      <Link href={`/novels/${novel.slug}`} className="text-sm text-gray-500 underline">
-        {novel.title}
+    <main className="mx-auto max-w-2xl flex-1 px-6 py-16 sm:px-10">
+      <Link href={`/novels/${novel.slug}`} className="site-link text-sm">
+        ← {novel.title}
       </Link>
-      <h1 className="mt-2 mb-8 text-2xl font-bold text-gray-900">{chapter.title}</h1>
+      <h1 className="font-display mt-3 mb-10 text-3xl">{chapter.title}</h1>
 
       <article
-        className="prose max-w-none"
+        className="prose prose-invert chapter-prose max-w-none"
         dangerouslySetInnerHTML={{ __html: chapter.content }}
       />
 
-      <nav className="mt-12 flex items-center justify-between border-t border-gray-200 pt-6">
+      <nav className="mt-14 flex items-center justify-between gap-4 border-t border-(--site-line) pt-6">
         {prevChapter ? (
           <Link
             href={`/novels/${novel.slug}/${prevChapter.slug}`}
-            className="text-sm font-medium text-gray-700 underline"
+            className="site-link text-sm font-medium"
           >
             ← {prevChapter.title}
           </Link>
@@ -92,7 +92,7 @@ export default async function ChapterPage({
         {nextChapter ? (
           <Link
             href={`/novels/${novel.slug}/${nextChapter.slug}`}
-            className="text-sm font-medium text-gray-700 underline"
+            className="site-link text-sm font-medium"
           >
             {nextChapter.title} →
           </Link>
@@ -101,20 +101,22 @@ export default async function ChapterPage({
         )}
       </nav>
 
-      <section id="comments" className="mt-12 border-t border-gray-200 pt-8">
-        <h2 className="text-lg font-semibold text-gray-900">
+      <section id="comments" className="mt-14 border-t border-(--site-line) pt-8">
+        <h2 className="section-title text-xl">
           Comentarios {chapter.comments.length > 0 && `(${chapter.comments.length})`}
         </h2>
 
-        <ul className="mt-4 space-y-4">
+        <ul className="mt-5 space-y-4">
           {chapter.comments.map((comment) => (
-            <li key={comment.id} className="rounded-md border border-gray-200 p-3">
-              <p className="text-sm font-medium text-gray-900">{comment.authorName}</p>
-              <p className="mt-1 text-sm text-gray-700 whitespace-pre-wrap">{comment.body}</p>
+            <li key={comment.id} className="site-card p-4">
+              <p className="text-sm font-medium">{comment.authorName}</p>
+              <p className="mt-1 text-sm whitespace-pre-wrap text-(--site-ink-soft)">
+                {comment.body}
+              </p>
             </li>
           ))}
           {chapter.comments.length === 0 && (
-            <li className="text-sm text-gray-500">Se el primero en comentar.</li>
+            <li className="text-sm text-(--site-ink-faint)">Sé el primero en comentar.</li>
           )}
         </ul>
 

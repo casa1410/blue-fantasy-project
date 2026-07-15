@@ -55,7 +55,7 @@ export function CommentForm({
           value={authorName}
           onChange={(e) => setAuthorName(e.target.value)}
           placeholder="Tu nombre"
-          className="rounded-md border border-gray-300 px-3 py-2 text-sm"
+          className="site-input"
         />
         <input
           type="email"
@@ -63,7 +63,7 @@ export function CommentForm({
           value={authorEmail}
           onChange={(e) => setAuthorEmail(e.target.value)}
           placeholder="Tu correo (no se publica)"
-          className="rounded-md border border-gray-300 px-3 py-2 text-sm"
+          className="site-input"
         />
       </div>
 
@@ -73,7 +73,7 @@ export function CommentForm({
         value={body}
         onChange={(e) => setBody(e.target.value)}
         placeholder="Escribe tu comentario..."
-        className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+        className="site-input"
       />
 
       {/* Honeypot: hidden from sighted/keyboard/screen-reader users, bots fill it anyway. */}
@@ -88,16 +88,12 @@ export function CommentForm({
         className="absolute -left-[9999px] h-0 w-0 opacity-0"
       />
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-      >
+      <button type="submit" disabled={loading} className="btn-glow disabled:opacity-50">
         {loading ? "Enviando..." : "Enviar comentario"}
       </button>
 
       {message && (
-        <p className={`text-sm ${message.type === "ok" ? "text-green-700" : "text-red-600"}`}>
+        <p className={`text-sm ${message.type === "ok" ? "text-emerald-400" : "text-rose-400"}`}>
           {message.text}
         </p>
       )}

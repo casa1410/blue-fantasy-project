@@ -2,15 +2,16 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <main className="mx-auto flex flex-1 max-w-2xl flex-col items-center justify-center px-4 py-16 text-center">
-      <h1 className="text-3xl font-bold text-gray-900">Pagina no encontrada</h1>
-      <p className="mt-3 text-gray-600">
-        Lo que buscas no existe o todavia no ha sido publicado.
+    <main className="site flex min-h-screen flex-col items-center justify-center px-6 py-16 text-center">
+      <p className="font-display text-sm tracking-[0.3em] text-(--site-accent-3) uppercase">
+        Página perdida
       </p>
-      <Link
-        href="/"
-        className="mt-8 rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white"
-      >
+      <h1 className="font-display mt-4 text-4xl">Esta página no existe</h1>
+      <p className="mt-3 max-w-md text-(--site-ink-soft)">
+        Lo que buscas no está aquí, o todavía no ha sido publicado en el universo de
+        BlueFantasyProject.
+      </p>
+      <Link href="/" className="btn-glow mt-10">
         Volver al inicio
       </Link>
     </main>
