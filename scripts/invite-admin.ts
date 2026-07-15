@@ -11,7 +11,11 @@ async function main() {
 
   const supabase = createSupabaseAdminClient();
 
-  const { data, error } = await supabase.auth.admin.inviteUserByEmail(email);
+  const redirectTo =
+    process.env.ADMIN_INVITE_REDIRECT_URL ?? "http://localhost:3000/admin/set-password";
+  const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, {
+    redirectTo,
+  });
   if (error) {
     console.error(`Error invitando a ${email}:`, error.message);
     process.exit(1);
