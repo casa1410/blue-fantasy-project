@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SPAM
+}
+
+model Novel {
+  id            String        @id @default(cuid())
+  title         String
+  slug          String        @unique
+  synopsis      String
+  coverImageUrl String?
+  genre         String?
+  tags          String[]      @default([])
+  status        ContentStatus @default(DRAFT)
+  chapters      Chapter[]
+  images        Image[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Chapter {
+  id        String        @id @default(cuid())
+  novel     Novel         @relation(fields: [novelId], references: [id], onDelete: Cascade)
+  novelId   String
+  title     String
+  slug      String
+  content   String
+  order     Int
+  status    ContentStatus @default(DRAFT)
+  images    Image[]
+  comments  Comment[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@unique([novelId, slug])
+}
+
+model Image {
+  id          String   @id @default(cuid())
+  url         String
+  storagePath String
+  altText     String?
+  novel       Novel?   @relation(fields: [novelId], references: [id], onDelete: Cascade)
+  novelId     String?
+  chapter     Chapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapterId   String?
+  createdAt   DateTime @default(now())
+}
+
+model Comment {
+  id          String        @id @default(cuid())
+  chapter     Chapter       @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapterId   String
+  authorName  String
+  authorEmail String
+  body        String
+  status      CommentStatus @default(PENDING)
+  ipHash      String?
+  createdAt   DateTime      @default(now())
+}
+
+model AdminProfile {
+  id        String   @id
+  email     String   @unique
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+}
