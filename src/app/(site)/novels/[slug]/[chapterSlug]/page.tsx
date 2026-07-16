@@ -44,13 +44,14 @@ export async function generateMetadata({
   const data = await getChapterData(slug, chapterSlug);
   if (!data) return {};
   const title = `${data.chapter.title} · ${data.novel.title}`;
+  const coverImage = data.chapter.coverImageUrl ?? data.novel.coverImageUrl;
   return {
     title,
     openGraph: {
       title,
       description: data.novel.synopsis,
       type: "article",
-      images: data.novel.coverImageUrl ? [{ url: data.novel.coverImageUrl }] : undefined,
+      images: coverImage ? [{ url: coverImage }] : undefined,
     },
   };
 }
@@ -71,7 +72,18 @@ export default async function ChapterPage({
       <Link href={`/novels/${novel.slug}`} className="site-link text-sm">
         ← {novel.title}
       </Link>
-      <h1 className="font-display mt-3 mb-10 text-3xl">{chapter.title}</h1>
+      <h1 className="font-display mt-3 mb-6 text-3xl">{chapter.title}</h1>
+
+      {(chapter.coverImageUrl ?? novel.coverImageUrl) && (
+        <div className="hero-cover mb-10 h-80 w-full sm:h-96">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={chapter.coverImageUrl ?? novel.coverImageUrl ?? undefined}
+            alt={chapter.title}
+            className="h-full w-full object-contain"
+          />
+        </div>
+      )}
 
       <article
         className="prose prose-invert chapter-prose max-w-none"
