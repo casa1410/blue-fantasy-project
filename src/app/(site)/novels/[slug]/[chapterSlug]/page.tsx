@@ -75,12 +75,12 @@ export default async function ChapterPage({
       <h1 className="font-display mt-3 mb-6 text-3xl">{chapter.title}</h1>
 
       {(chapter.coverImageUrl ?? novel.coverImageUrl) && (
-        <div className="mb-10 flex justify-center">
+        <div className="mb-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={chapter.coverImageUrl ?? novel.coverImageUrl ?? undefined}
             alt={chapter.title}
-            className="h-80 w-auto rounded-xl object-contain shadow-xl shadow-black/40 sm:h-96"
+            className="h-auto w-full rounded-xl object-contain shadow-xl shadow-black/40"
           />
         </div>
       )}
