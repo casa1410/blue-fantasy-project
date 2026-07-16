@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createChapter } from "@/actions/chapters";
+import { createChapter, uploadChapterCover } from "@/actions/chapters";
 
 export function ChapterQuickCreateForm({ novelId }: { novelId: string }) {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,6 +23,14 @@ export function ChapterQuickCreateForm({ novelId }: { novelId: string }) {
         content: "<p></p>",
         status: "DRAFT",
       });
+
+      const coverFile = fileInputRef.current?.files?.[0];
+      if (coverFile) {
+        const formData = new FormData();
+        formData.set("file", coverFile);
+        await uploadChapterCover(novelId, created.id, formData);
+      }
+
       router.push(`/admin/novels/${novelId}/chapters/${created.id}/edit`);
     } catch {
       setError("Ocurrio un error creando el capitulo.");
@@ -37,6 +46,13 @@ export function ChapterQuickCreateForm({ novelId }: { novelId: string }) {
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Titulo del capitulo"
         className="w-full max-w-sm rounded-md border border-gray-300 px-3 py-2 text-sm"
+      />
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        title="Portada del capitulo (opcional)"
+        className="text-sm"
       />
       <button
         type="submit"
