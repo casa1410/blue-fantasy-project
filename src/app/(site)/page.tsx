@@ -16,7 +16,7 @@ export default async function HomePage() {
       <section className="mx-auto flex max-w-6xl flex-col-reverse items-center gap-12 px-6 py-16 sm:px-10 lg:flex-row lg:justify-between lg:py-24">
         <div className="max-w-xl text-center lg:text-left">
           <h1 className="font-display text-4xl leading-tight text-balance sm:text-5xl lg:text-6xl">
-            Creaciones de ElFrikiSac.
+            ElFrikiSac
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-(--site-ink-soft)">
             Un recopilatorio de todo lo que escribo.
