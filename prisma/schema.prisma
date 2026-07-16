@@ -39,18 +39,20 @@ model Novel {
 }
 
 model Chapter {
-  id        String        @id @default(cuid())
-  novel     Novel         @relation(fields: [novelId], references: [id], onDelete: Cascade)
-  novelId   String
-  title     String
-  slug      String
-  content   String
-  order     Int
-  status    ContentStatus @default(DRAFT)
-  images    Image[]
-  comments  Comment[]
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  id             String        @id @default(cuid())
+  novel          Novel         @relation(fields: [novelId], references: [id], onDelete: Cascade)
+  novelId        String
+  title          String
+  slug           String
+  content        String
+  order          Int
+  status         ContentStatus @default(DRAFT)
+  coverImageUrl  String?
+  coverImagePath String?
+  images         Image[]
+  comments       Comment[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 
   @@unique([novelId, slug])
 }

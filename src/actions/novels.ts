@@ -86,6 +86,7 @@ export async function deleteNovel(id: string) {
   const paths = [
     novel.coverImagePath,
     ...novel.images.map((i) => i.storagePath),
+    ...novel.chapters.map((c) => c.coverImagePath),
     ...novel.chapters.flatMap((c) => c.images.map((i) => i.storagePath)),
   ].filter((p): p is string => Boolean(p));
 

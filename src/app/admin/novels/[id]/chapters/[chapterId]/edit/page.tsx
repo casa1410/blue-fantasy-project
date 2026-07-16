@@ -3,6 +3,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requireAdminUser } from "@/lib/auth";
 import { ChapterEditForm } from "@/components/admin/chapter-edit-form";
+import { ChapterCoverUpload } from "@/components/admin/chapter-cover-upload";
 
 export default async function EditChapterPage({
   params,
@@ -23,6 +24,14 @@ export default async function EditChapterPage({
         Volver a capitulos
       </Link>
       <h1 className="mt-2 mb-8 text-2xl font-semibold text-gray-900">Editar capitulo</h1>
+
+      <div className="mb-8">
+        <ChapterCoverUpload
+          novelId={id}
+          chapterId={chapter.id}
+          currentUrl={chapter.coverImageUrl}
+        />
+      </div>
 
       <ChapterEditForm
         novelId={id}

@@ -84,8 +84,12 @@ export async function deleteChapter(novelId: string, chapterId: string) {
     include: { images: true },
   });
 
+  const paths = [chapter.coverImagePath, ...chapter.images.map((i) => i.storagePath)].filter(
+    (p): p is string => Boolean(p),
+  );
+
   await prisma.chapter.delete({ where: { id: chapterId } });
-  await Promise.all(chapter.images.map((i) => deleteImageFile(i.storagePath)));
+  await Promise.all(paths.map((path) => deleteImageFile(path)));
 
   revalidatePath(`/admin/novels/${novelId}/chapters`);
 }
@@ -133,4 +137,49 @@ export async function uploadChapterInlineImage(
   await prisma.image.create({ data: { chapterId, url, storagePath: path } });
 
   return { url };
+}
+
+export async function uploadChapterCover(
+  novelId: string,
+  chapterId: string,
+  formData: FormData,
+) {
+  await requireAdminUser();
+  const file = formData.get("file") as File | null;
+  if (!file || file.size === 0) throw new Error("No se selecciono ningun archivo.");
+
+  const validationError = validateImageFile(file);
+  if (validationError) throw new Error(validationError);
+
+  const chapter = await prisma.chapter.findUniqueOrThrow({ where: { id: chapterId } });
+  const { url, path } = await uploadImageFile(file, `novels/${novelId}/chapters/${chapterId}/cover`);
+
+  await prisma.chapter.update({
+    where: { id: chapterId },
+    data: { coverImageUrl: url, coverImagePath: path },
+  });
+
+  if (chapter.coverImagePath) {
+    await deleteImageFile(chapter.coverImagePath);
+  }
+
+  revalidatePath(`/admin/novels/${novelId}/chapters/${chapterId}/edit`);
+  revalidatePath("/");
+}
+
+export async function removeChapterCover(novelId: string, chapterId: string) {
+  await requireAdminUser();
+  const chapter = await prisma.chapter.findUniqueOrThrow({ where: { id: chapterId } });
+
+  await prisma.chapter.update({
+    where: { id: chapterId },
+    data: { coverImageUrl: null, coverImagePath: null },
+  });
+
+  if (chapter.coverImagePath) {
+    await deleteImageFile(chapter.coverImagePath);
+  }
+
+  revalidatePath(`/admin/novels/${novelId}/chapters/${chapterId}/edit`);
+  revalidatePath("/");
 }

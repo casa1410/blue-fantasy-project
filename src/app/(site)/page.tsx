@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { HeroCarousel, type HeroSlide } from "@/components/hero-carousel";
 
 export const dynamic = "force-dynamic";
 
@@ -7,9 +8,29 @@ export default async function HomePage() {
   const novels = await prisma.novel.findMany({
     where: { status: "PUBLISHED" },
     orderBy: { updatedAt: "desc" },
+    include: {
+      chapters: {
+        where: { status: "PUBLISHED" },
+        orderBy: { createdAt: "desc" },
+        take: 1,
+      },
+    },
   });
 
-  const featured = novels.find((n) => n.coverImageUrl) ?? null;
+  const slides: HeroSlide[] = novels
+    .map((novel): HeroSlide | null => {
+      const latestChapter = novel.chapters[0];
+      const imageUrl = latestChapter?.coverImageUrl ?? novel.coverImageUrl;
+      if (!latestChapter || !imageUrl) return null;
+      return {
+        href: `/novels/${novel.slug}/${latestChapter.slug}`,
+        imageUrl,
+        novelTitle: novel.title,
+        chapterTitle: latestChapter.title,
+      };
+    })
+    .filter((s): s is HeroSlide => s !== null)
+    .slice(0, 8);
 
   return (
     <main className="flex-1">
@@ -26,17 +47,10 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <div className="novel-cover h-95 w-70 shrink-0 rounded-2xl shadow-2xl shadow-black/50 sm:h-120 sm:w-85">
-          {featured?.coverImageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={featured.coverImageUrl} alt={featured.title} />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-[#121830] to-[#070b14]">
-              <span className="font-display text-lg text-(--site-ink-faint)">
-                BlueFantasyProject
-              </span>
-            </div>
-          )}
+        <div className="w-80 shrink-0 sm:w-100">
+          <div className="h-130 shadow-2xl shadow-black/50 sm:h-160">
+            <HeroCarousel slides={slides} />
+          </div>
         </div>
       </section>
 
