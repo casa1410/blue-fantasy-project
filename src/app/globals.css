@@ -197,12 +197,14 @@ body {
   background: #0d1220;
   border-radius: 1rem;
   overflow: hidden;
-  height: 32.5rem;
+  /* Matches the ~2:2.8 portrait ratio of typical covers, so object-contain
+     shows the full image without leftover empty space top/bottom. */
+  height: 28rem;
 }
 
 @media (min-width: 640px) {
   .hero-cover {
-    height: 40rem;
+    height: 35rem;
   }
 }
 
