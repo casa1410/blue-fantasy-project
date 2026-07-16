@@ -197,6 +197,13 @@ body {
   background: #0d1220;
   border-radius: 1rem;
   overflow: hidden;
+  height: 32.5rem;
+}
+
+@media (min-width: 640px) {
+  .hero-cover {
+    height: 40rem;
+  }
 }
 
 .hero-slide {

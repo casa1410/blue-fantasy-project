@@ -31,7 +31,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
   if (slides.length === 0) {
     return (
-      <div className="hero-cover flex h-full w-full items-center justify-center bg-linear-to-br from-[#121830] to-[#070b14]">
+      <div className="hero-cover flex items-center justify-center bg-linear-to-br from-[#121830] to-[#070b14]">
         <span className="font-display text-lg text-(--site-ink-faint)">BlueFantasyProject</span>
       </div>
     );
@@ -39,7 +39,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
   return (
     <div>
-      <div className="hero-cover h-full w-full">
+      <div className="hero-cover">
         {slides.map((slide, i) => (
           <Link
             key={slide.href}

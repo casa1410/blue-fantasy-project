@@ -47,10 +47,8 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <div className="w-80 shrink-0 sm:w-100">
-          <div className="h-130 shadow-2xl shadow-black/50 sm:h-160">
-            <HeroCarousel slides={slides} />
-          </div>
+        <div className="w-80 shrink-0 shadow-2xl shadow-black/50 sm:w-100">
+          <HeroCarousel slides={slides} />
         </div>
       </section>
 
