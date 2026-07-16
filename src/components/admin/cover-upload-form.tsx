@@ -32,22 +32,22 @@ export function CoverUploadForm({
 
   return (
     <div className="space-y-3">
-      <h2 className="text-lg font-medium text-gray-900">Portada</h2>
+      <p className="admin-label">Portada de la novela</p>
       {currentUrl && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={currentUrl} alt="Portada actual" className="h-48 w-32 rounded object-cover" />
+        <img
+          src={currentUrl}
+          alt="Portada actual"
+          className="h-48 w-32 rounded-lg object-cover"
+        />
       )}
-      <form ref={formRef} action={handleSubmit} className="flex items-center gap-3">
-        <input type="file" name="file" accept="image/*" required className="text-sm" />
-        <button
-          type="submit"
-          disabled={loading}
-          className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50"
-        >
+      <form ref={formRef} action={handleSubmit} className="flex flex-wrap items-center gap-3">
+        <input type="file" name="file" accept="image/*" required className="text-sm text-(--admin-ink-soft)" />
+        <button type="submit" disabled={loading} className="btn-admin-secondary">
           {loading ? "Subiendo..." : "Subir portada"}
         </button>
       </form>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-(--admin-danger)">{error}</p>}
     </div>
   );
 }

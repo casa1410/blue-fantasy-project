@@ -20,21 +20,19 @@ export default async function NovelImagesPage({
   if (!novel) notFound();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 space-y-10">
-      <div>
-        <Link
-          href={`/admin/novels/${novel.id}/edit`}
-          className="text-sm text-gray-500 underline"
-        >
-          Volver a {novel.title}
-        </Link>
-        <h1 className="mt-2 text-2xl font-semibold text-gray-900">
-          Imagenes de &quot;{novel.title}&quot;
-        </h1>
+    <div>
+      <Link href={`/admin/novels/${novel.id}/edit`} className="admin-link">
+        ← {novel.title}
+      </Link>
+      <h1 className="admin-page-title mt-3">Imagenes</h1>
+
+      <div className="admin-card mt-8 max-w-2xl">
+        <CoverUploadForm novelId={novel.id} currentUrl={novel.coverImageUrl} />
       </div>
 
-      <CoverUploadForm novelId={novel.id} currentUrl={novel.coverImageUrl} />
-      <ReferenceImages novelId={novel.id} images={novel.images} />
+      <div className="admin-card mt-6">
+        <ReferenceImages novelId={novel.id} images={novel.images} />
+      </div>
     </div>
   );
 }

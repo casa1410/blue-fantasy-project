@@ -55,80 +55,66 @@ export function NovelForm({ novel }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl space-y-5">
-      <div className="space-y-1">
-        <label htmlFor="title" className="text-sm font-medium text-gray-700">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <div>
+        <label htmlFor="title" className="admin-label">
           Titulo
         </label>
-        <input
-          id="title"
-          {...register("title")}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-        />
-        {errors.title && <p className="text-sm text-red-600">{errors.title.message}</p>}
+        <input id="title" {...register("title")} className="admin-input" />
+        {errors.title && (
+          <p className="mt-1 text-sm text-(--admin-danger)">{errors.title.message}</p>
+        )}
       </div>
 
-      <div className="space-y-1">
-        <label htmlFor="synopsis" className="text-sm font-medium text-gray-700">
+      <div>
+        <label htmlFor="synopsis" className="admin-label">
           Sinopsis
         </label>
         <textarea
           id="synopsis"
           rows={5}
           {...register("synopsis")}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+          className="admin-textarea"
         />
         {errors.synopsis && (
-          <p className="text-sm text-red-600">{errors.synopsis.message}</p>
+          <p className="mt-1 text-sm text-(--admin-danger)">{errors.synopsis.message}</p>
         )}
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="space-y-1">
-          <label htmlFor="genre" className="text-sm font-medium text-gray-700">
+        <div>
+          <label htmlFor="genre" className="admin-label">
             Genero
           </label>
-          <input
-            id="genre"
-            {...register("genre")}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-          />
+          <input id="genre" {...register("genre")} className="admin-input" />
         </div>
 
-        <div className="space-y-1">
-          <label htmlFor="status" className="text-sm font-medium text-gray-700">
+        <div>
+          <label htmlFor="status" className="admin-label">
             Estado
           </label>
-          <select
-            id="status"
-            {...register("status")}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-          >
+          <select id="status" {...register("status")} className="admin-select">
             <option value="DRAFT">Borrador</option>
             <option value="PUBLISHED">Publicada</option>
           </select>
         </div>
       </div>
 
-      <div className="space-y-1">
-        <label htmlFor="tags" className="text-sm font-medium text-gray-700">
+      <div>
+        <label htmlFor="tags" className="admin-label">
           Etiquetas (separadas por coma)
         </label>
         <input
           id="tags"
           {...register("tags")}
           placeholder="fantasia, romance, aventura"
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+          className="admin-input"
         />
       </div>
 
-      {serverError && <p className="text-sm text-red-600">{serverError}</p>}
+      {serverError && <p className="text-sm text-(--admin-danger)">{serverError}</p>}
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-      >
+      <button type="submit" disabled={isSubmitting} className="btn-admin-primary">
         {isSubmitting ? "Guardando..." : "Guardar"}
       </button>
     </form>

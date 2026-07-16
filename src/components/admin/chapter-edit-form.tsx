@@ -47,12 +47,12 @@ export function ChapterEditForm({ novelId, chapter }: Props) {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm sm:max-w-md"
+          className="admin-input sm:max-w-md"
         />
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value as "DRAFT" | "PUBLISHED")}
-          className="rounded-md border border-gray-300 px-3 py-2 text-sm"
+          className="admin-select sm:w-auto"
         >
           <option value="DRAFT">Borrador</option>
           <option value="PUBLISHED">Publicado</option>
@@ -66,21 +66,17 @@ export function ChapterEditForm({ novelId, chapter }: Props) {
         onChange={setContent}
       />
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-(--admin-danger)">{error}</p>}
 
       <div className="flex items-center gap-4">
-        <button
-          type="submit"
-          disabled={saving}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-        >
+        <button type="submit" disabled={saving} className="btn-admin-primary">
           {saving ? "Guardando..." : "Guardar cambios"}
         </button>
         <button
           type="button"
           onClick={handleDelete}
           disabled={deleting}
-          className="text-sm font-medium text-red-600 underline disabled:opacity-50"
+          className="btn-admin-ghost-danger"
         >
           {deleting ? "Borrando..." : "Borrar capitulo"}
         </button>

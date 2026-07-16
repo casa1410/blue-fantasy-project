@@ -40,13 +40,13 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="mx-auto max-w-md px-4 py-12">
-      <h1 className="text-2xl font-semibold text-gray-900">Mi cuenta</h1>
-      <p className="mt-1 text-sm text-gray-500">Cambia tu contraseña de administrador.</p>
+    <div>
+      <h1 className="admin-page-title">Mi cuenta</h1>
+      <p className="admin-page-sub">Cambia tu contraseña de administrador.</p>
 
-      <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-        <div className="space-y-1">
-          <label htmlFor="password" className="text-sm font-medium text-gray-700">
+      <form onSubmit={handleSubmit} className="admin-card mt-8 max-w-md space-y-4">
+        <div>
+          <label htmlFor="password" className="admin-label">
             Nueva contraseña
           </label>
           <input
@@ -55,12 +55,12 @@ export default function AccountPage() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            className="admin-input"
           />
         </div>
 
-        <div className="space-y-1">
-          <label htmlFor="confirm" className="text-sm font-medium text-gray-700">
+        <div>
+          <label htmlFor="confirm" className="admin-label">
             Confirmar contraseña
           </label>
           <input
@@ -69,18 +69,14 @@ export default function AccountPage() {
             required
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            className="admin-input"
           />
         </div>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        {success && <p className="text-sm text-green-700">Contraseña actualizada.</p>}
+        {error && <p className="text-sm text-(--admin-danger)">{error}</p>}
+        {success && <p className="text-sm text-(--admin-success)">Contraseña actualizada.</p>}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-        >
+        <button type="submit" disabled={loading} className="btn-admin-primary">
           {loading ? "Guardando..." : "Guardar contraseña"}
         </button>
       </form>

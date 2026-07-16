@@ -46,26 +46,26 @@ export function ChapterCoverUpload({
   }
 
   return (
-    <div className="space-y-2 rounded-md border border-gray-200 p-4">
-      <p className="text-sm font-medium text-gray-700">
-        Portada del capitulo (opcional)
-      </p>
-      <p className="text-xs text-gray-500">
-        Si no le pones una, en el inicio del sitio se muestra la portada de la novela.
-      </p>
+    <div className="space-y-3">
+      <div>
+        <p className="admin-label">Portada del capitulo (opcional)</p>
+        <p className="text-sm text-(--admin-ink-faint)">
+          Si no le pones una, en el inicio del sitio se muestra la portada de la novela.
+        </p>
+      </div>
 
       {currentUrl && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={currentUrl} alt="Portada del capitulo" className="h-32 w-24 rounded object-cover" />
+        <img
+          src={currentUrl}
+          alt="Portada del capitulo"
+          className="h-32 w-24 rounded-lg object-cover"
+        />
       )}
 
       <form ref={formRef} action={handleSubmit} className="flex flex-wrap items-center gap-3">
-        <input type="file" name="file" accept="image/*" required className="text-sm" />
-        <button
-          type="submit"
-          disabled={loading}
-          className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50"
-        >
+        <input type="file" name="file" accept="image/*" required className="text-sm text-(--admin-ink-soft)" />
+        <button type="submit" disabled={loading} className="btn-admin-secondary">
           {loading ? "Subiendo..." : currentUrl ? "Reemplazar" : "Subir portada"}
         </button>
         {currentUrl && (
@@ -73,13 +73,13 @@ export function ChapterCoverUpload({
             type="button"
             onClick={handleRemove}
             disabled={loading}
-            className="text-sm font-medium text-red-600 underline disabled:opacity-50"
+            className="btn-admin-ghost-danger"
           >
             Quitar
           </button>
         )}
       </form>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-(--admin-danger)">{error}</p>}
     </div>
   );
 }

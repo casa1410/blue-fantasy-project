@@ -55,34 +55,33 @@ export function AdminList({
 
   return (
     <div className="space-y-6">
-      <form onSubmit={handleInvite} className="flex flex-col gap-3 sm:flex-row sm:items-center">
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="correo@ejemplo.com"
-          className="w-full max-w-sm rounded-md border border-gray-300 px-3 py-2 text-sm"
-        />
-        <button
-          type="submit"
-          disabled={inviting}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-        >
-          {inviting ? "Invitando..." : "Invitar administrador"}
-        </button>
-      </form>
+      <div>
+        <p className="admin-label">Invitar administrador</p>
+        <form onSubmit={handleInvite} className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="correo@ejemplo.com"
+            className="admin-input max-w-sm"
+          />
+          <button type="submit" disabled={inviting} className="btn-admin-primary">
+            {inviting ? "Invitando..." : "Invitar"}
+          </button>
+        </form>
+      </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-(--admin-danger)">{error}</p>}
 
       {invited && (
-        <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+        <div className="admin-callout">
           <p>
             Se envio una invitacion por correo a <strong>{invited.email}</strong>, pero esos links
             a veces no llegan a funcionar (Gmail los puede invalidar antes de que se abran).
             Comparte esta contrasena temporal directamente como respaldo:
           </p>
-          <p className="mt-2 font-mono text-base">{invited.tempPassword}</p>
+          <p className="mt-2 font-mono text-base text-(--admin-ink)">{invited.tempPassword}</p>
           <p className="mt-2 text-xs">
             Puede iniciar sesion con esta contrasena y cambiarla luego desde &quot;Mi cuenta&quot;.
           </p>
@@ -90,19 +89,19 @@ export function AdminList({
       )}
 
       {!canRemove && (
-        <p className="text-sm text-amber-600">
+        <p className="admin-callout">
           Debe haber al menos 2 administradores: no se puede eliminar ninguno hasta agregar otro.
         </p>
       )}
 
-      <ul className="divide-y divide-gray-200 border-t border-gray-200">
+      <div className="border-t border-(--admin-border)">
         {admins.map((admin) => (
-          <li key={admin.id} className="flex items-center justify-between py-4">
+          <div key={admin.id} className="admin-row">
             <div>
-              <p className="font-medium text-gray-900">
+              <p className="font-medium">
                 {admin.email} {admin.id === currentUserId && "(tu)"}
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="mt-1 text-sm text-(--admin-ink-faint)">
                 Desde {new Date(admin.createdAt).toLocaleDateString()}
               </p>
             </div>
@@ -110,13 +109,13 @@ export function AdminList({
               type="button"
               onClick={() => handleRemove(admin.id, admin.email)}
               disabled={!canRemove || admin.id === currentUserId || removingId === admin.id}
-              className="text-sm font-medium text-red-600 underline disabled:opacity-30"
+              className="btn-admin-ghost-danger disabled:opacity-30"
             >
               {removingId === admin.id ? "Eliminando..." : "Eliminar"}
             </button>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

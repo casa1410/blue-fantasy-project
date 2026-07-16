@@ -355,3 +355,319 @@ body {
   border-radius: 0.75rem;
   border: 1px solid var(--site-line);
 }
+
+/* ---------------------------------------------------------------------- *
+ * Admin panel theme — a calm, professional workspace. Light and separate
+ * from the public site's dark identity; shares only the accent hue as a
+ * quiet brand thread.
+ * ---------------------------------------------------------------------- */
+
+.admin-shell {
+  --admin-bg: #f5f6fa;
+  --admin-surface: #ffffff;
+  --admin-border: #e2e5ec;
+  --admin-ink: #1b1f2a;
+  --admin-ink-soft: #5b6172;
+  --admin-ink-faint: #8b91a3;
+  --admin-accent: #3159c4;
+  --admin-accent-hover: #24479e;
+  --admin-accent-soft: #eaf0ff;
+  --admin-success: #1f8a54;
+  --admin-success-soft: #e6f6ec;
+  --admin-warn: #b06a12;
+  --admin-warn-soft: #fbf1e0;
+  --admin-danger: #c23b3b;
+  --admin-danger-soft: #fbeaea;
+
+  display: flex;
+  min-height: 100vh;
+  background: var(--admin-bg);
+  color: var(--admin-ink);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+.admin-sidebar {
+  width: 15.5rem;
+  flex-shrink: 0;
+  background: var(--admin-surface);
+  border-right: 1px solid var(--admin-border);
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-sidebar-logo {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.05rem;
+  padding: 0 0.6rem 1.5rem;
+  color: var(--admin-ink);
+  text-decoration: none;
+}
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.55rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--admin-ink-soft);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.admin-nav-link:hover {
+  background: var(--admin-bg);
+  color: var(--admin-ink);
+}
+
+.admin-nav-link.active {
+  background: var(--admin-accent-soft);
+  color: var(--admin-accent);
+}
+
+.admin-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 0.9rem 2rem;
+  border-bottom: 1px solid var(--admin-border);
+  background: var(--admin-surface);
+}
+
+.admin-topbar-email {
+  font-size: 0.85rem;
+  color: var(--admin-ink-faint);
+}
+
+.admin-content {
+  padding: 2.5rem 2rem;
+}
+
+.admin-page-title {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.6rem;
+  color: var(--admin-ink);
+}
+
+.admin-page-sub {
+  color: var(--admin-ink-soft);
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.admin-card {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 0.85rem;
+  padding: 1.5rem;
+}
+
+.admin-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.admin-row:last-child {
+  border-bottom: none;
+}
+
+.admin-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--admin-ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.4rem;
+}
+
+.admin-input,
+.admin-textarea,
+.admin-select {
+  width: 100%;
+  border: 1px solid var(--admin-border);
+  border-radius: 0.55rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.875rem;
+  background: var(--admin-surface);
+  color: var(--admin-ink);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.admin-input::placeholder,
+.admin-textarea::placeholder {
+  color: var(--admin-ink-faint);
+}
+
+.admin-input:focus-visible,
+.admin-textarea:focus-visible,
+.admin-select:focus-visible {
+  outline: none;
+  border-color: var(--admin-accent);
+  box-shadow: 0 0 0 3px var(--admin-accent-soft);
+}
+
+.btn-admin-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: var(--admin-accent);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+
+.btn-admin-primary:hover {
+  background: var(--admin-accent-hover);
+}
+
+.btn-admin-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-admin-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: var(--admin-surface);
+  color: var(--admin-ink);
+  border: 1px solid var(--admin-border);
+  padding: 0.55rem 1.1rem;
+  border-radius: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  text-decoration: none;
+}
+
+.btn-admin-secondary:hover {
+  background: var(--admin-bg);
+  border-color: var(--admin-ink-faint);
+}
+
+.btn-admin-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-admin-ghost-danger {
+  color: var(--admin-danger);
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.btn-admin-ghost-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-admin-ghost {
+  color: var(--admin-ink-soft);
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-admin-ghost:hover {
+  color: var(--admin-ink);
+}
+
+.admin-link {
+  color: var(--admin-accent);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.admin-link:hover {
+  text-decoration: underline;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.badge-draft {
+  background: var(--admin-warn-soft);
+  color: var(--admin-warn);
+}
+
+.badge-published {
+  background: var(--admin-success-soft);
+  color: var(--admin-success);
+}
+
+.badge-pending {
+  background: var(--admin-warn-soft);
+  color: var(--admin-warn);
+}
+
+.badge-approved {
+  background: var(--admin-success-soft);
+  color: var(--admin-success);
+}
+
+.badge-rejected,
+.badge-spam {
+  background: var(--admin-danger-soft);
+  color: var(--admin-danger);
+}
+
+.admin-empty {
+  color: var(--admin-ink-faint);
+  font-size: 0.9rem;
+  padding: 1.5rem 0;
+}
+
+.admin-callout {
+  border-radius: 0.6rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  background: var(--admin-warn-soft);
+  color: var(--admin-warn);
+}

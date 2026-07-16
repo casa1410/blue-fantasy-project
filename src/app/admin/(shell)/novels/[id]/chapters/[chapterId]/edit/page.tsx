@@ -19,13 +19,13 @@ export default async function EditChapterPage({
   if (!chapter) notFound();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12">
-      <Link href={`/admin/novels/${id}/chapters`} className="text-sm text-gray-500 underline">
-        Volver a capitulos
+    <div>
+      <Link href={`/admin/novels/${id}/chapters`} className="admin-link">
+        ← Capitulos
       </Link>
-      <h1 className="mt-2 mb-8 text-2xl font-semibold text-gray-900">Editar capitulo</h1>
+      <h1 className="admin-page-title mt-3 mb-8">{chapter.title}</h1>
 
-      <div className="mb-8">
+      <div className="admin-card mb-6 max-w-2xl">
         <ChapterCoverUpload
           novelId={id}
           chapterId={chapter.id}
@@ -33,15 +33,17 @@ export default async function EditChapterPage({
         />
       </div>
 
-      <ChapterEditForm
-        novelId={id}
-        chapter={{
-          id: chapter.id,
-          title: chapter.title,
-          content: chapter.content,
-          status: chapter.status,
-        }}
-      />
+      <div className="admin-card max-w-2xl">
+        <ChapterEditForm
+          novelId={id}
+          chapter={{
+            id: chapter.id,
+            title: chapter.title,
+            content: chapter.content,
+            status: chapter.status,
+          }}
+        />
+      </div>
     </div>
   );
 }

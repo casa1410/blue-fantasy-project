@@ -22,7 +22,7 @@ export function DeleteNovelButton({ id, title }: { id: string; title: string }) 
       type="button"
       onClick={handleDelete}
       disabled={loading}
-      className="text-sm font-medium text-red-600 underline disabled:opacity-50"
+      className="btn-admin-ghost-danger disabled:opacity-50"
     >
       {loading ? "Borrando..." : "Borrar novela"}
     </button>

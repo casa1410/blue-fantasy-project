@@ -29,18 +29,19 @@ export default async function AdminCommentsPage({
   });
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="text-2xl font-semibold text-gray-900">Comentarios</h1>
+    <div>
+      <h1 className="admin-page-title">Comentarios</h1>
+      <p className="admin-page-sub">Modera lo que se publica en el sitio.</p>
 
-      <div className="mt-6 flex gap-4 border-b border-gray-200">
+      <div className="mt-6 flex gap-2 border-b border-(--admin-border)">
         {TABS.map((tab) => (
           <Link
             key={tab.value}
             href={`/admin/comments?status=${tab.value}`}
-            className={`pb-2 text-sm font-medium ${
+            className={`border-b-2 px-3 pb-3 text-sm font-medium ${
               activeStatus === tab.value
-                ? "border-b-2 border-gray-900 text-gray-900"
-                : "text-gray-500"
+                ? "border-(--admin-accent) text-(--admin-accent)"
+                : "border-transparent text-(--admin-ink-faint) hover:text-(--admin-ink)"
             }`}
           >
             {tab.label}
@@ -48,7 +49,7 @@ export default async function AdminCommentsPage({
         ))}
       </div>
 
-      <ul className="mt-6 space-y-4">
+      <div className="mt-6 space-y-3">
         {comments.map((comment) => (
           <CommentModerationRow
             key={comment.id}
@@ -64,9 +65,9 @@ export default async function AdminCommentsPage({
           />
         ))}
         {comments.length === 0 && (
-          <li className="text-sm text-gray-500">No hay comentarios en esta categoria.</li>
+          <p className="admin-empty">No hay comentarios en esta categoria.</p>
         )}
-      </ul>
+      </div>
     </div>
   );
 }

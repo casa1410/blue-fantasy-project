@@ -24,25 +24,32 @@ export function ChapterList({
     setPendingId(null);
   }
 
+  if (chapters.length === 0) {
+    return <p className="admin-empty">Todavia no hay capitulos.</p>;
+  }
+
   return (
-    <ul className="divide-y divide-gray-200 border-t border-gray-200">
-      {chapters.length === 0 && (
-        <li className="py-6 text-sm text-gray-500">Todavia no hay capitulos.</li>
-      )}
+    <div>
       {chapters.map((chapter, index) => (
-        <li key={chapter.id} className="flex items-center justify-between py-4">
-          <div>
-            <p className="font-medium text-gray-900">{chapter.title}</p>
-            <p className="text-sm text-gray-500">
-              {chapter.status === "PUBLISHED" ? "Publicado" : "Borrador"}
-            </p>
+        <div key={chapter.id} className="admin-row">
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-(--admin-ink-faint)">{index + 1}.</span>
+            <div>
+              <p className="font-medium">{chapter.title}</p>
+              <span
+                className={`badge mt-1 inline-flex ${chapter.status === "PUBLISHED" ? "badge-published" : "badge-draft"}`}
+              >
+                {chapter.status === "PUBLISHED" ? "Publicado" : "Borrador"}
+              </span>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => handleMove(chapter.id, "up")}
               disabled={index === 0 || pendingId === chapter.id}
-              className="text-sm text-gray-500 disabled:opacity-30"
+              className="btn-admin-ghost disabled:opacity-30"
+              aria-label="Mover arriba"
             >
               ▲
             </button>
@@ -50,19 +57,20 @@ export function ChapterList({
               type="button"
               onClick={() => handleMove(chapter.id, "down")}
               disabled={index === chapters.length - 1 || pendingId === chapter.id}
-              className="text-sm text-gray-500 disabled:opacity-30"
+              className="btn-admin-ghost disabled:opacity-30"
+              aria-label="Mover abajo"
             >
               ▼
             </button>
             <Link
               href={`/admin/novels/${novelId}/chapters/${chapter.id}/edit`}
-              className="text-sm font-medium text-gray-700 underline"
+              className="admin-link"
             >
               Editar
             </Link>
           </div>
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 }

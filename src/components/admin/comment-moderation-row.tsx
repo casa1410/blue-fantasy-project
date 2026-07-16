@@ -27,25 +27,26 @@ export function CommentModerationRow({ comment }: { comment: CommentItem }) {
   }
 
   return (
-    <li className="space-y-2 rounded-md border border-gray-200 p-4">
-      <div className="flex items-center justify-between">
-        <p className="text-sm font-medium text-gray-900">
-          {comment.authorName} <span className="text-gray-400">({comment.authorEmail})</span>
+    <div className="admin-card space-y-2">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="text-sm font-medium">
+          {comment.authorName}{" "}
+          <span className="text-(--admin-ink-faint)">({comment.authorEmail})</span>
         </p>
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-(--admin-ink-faint)">
           {new Date(comment.createdAt).toLocaleString()}
         </p>
       </div>
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-(--admin-ink-faint)">
         {comment.novelTitle} · {comment.chapterTitle}
       </p>
-      <p className="whitespace-pre-wrap text-sm text-gray-700">{comment.body}</p>
-      <div className="flex gap-3 pt-1">
+      <p className="text-sm whitespace-pre-wrap text-(--admin-ink-soft)">{comment.body}</p>
+      <div className="flex gap-4 pt-1">
         <button
           type="button"
           onClick={() => handleAction("APPROVED")}
           disabled={pending !== null}
-          className="text-sm font-medium text-green-700 underline disabled:opacity-50"
+          className="text-sm font-medium text-(--admin-success) hover:underline disabled:opacity-50"
         >
           {pending === "APPROVED" ? "..." : "Aprobar"}
         </button>
@@ -53,7 +54,7 @@ export function CommentModerationRow({ comment }: { comment: CommentItem }) {
           type="button"
           onClick={() => handleAction("REJECTED")}
           disabled={pending !== null}
-          className="text-sm font-medium text-gray-600 underline disabled:opacity-50"
+          className="btn-admin-ghost disabled:opacity-50"
         >
           {pending === "REJECTED" ? "..." : "Rechazar"}
         </button>
@@ -61,11 +62,11 @@ export function CommentModerationRow({ comment }: { comment: CommentItem }) {
           type="button"
           onClick={() => handleAction("SPAM")}
           disabled={pending !== null}
-          className="text-sm font-medium text-red-600 underline disabled:opacity-50"
+          className="btn-admin-ghost-danger disabled:opacity-50"
         >
           {pending === "SPAM" ? "..." : "Marcar spam"}
         </button>
       </div>
-    </li>
+    </div>
   );
 }

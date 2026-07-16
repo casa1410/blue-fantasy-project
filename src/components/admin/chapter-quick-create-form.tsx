@@ -45,23 +45,19 @@ export function ChapterQuickCreateForm({ novelId }: { novelId: string }) {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Titulo del capitulo"
-        className="w-full max-w-sm rounded-md border border-gray-300 px-3 py-2 text-sm"
+        className="admin-input max-w-sm"
       />
       <input
         ref={fileInputRef}
         type="file"
         accept="image/*"
         title="Portada del capitulo (opcional)"
-        className="text-sm"
+        className="text-sm text-(--admin-ink-soft)"
       />
-      <button
-        type="submit"
-        disabled={loading}
-        className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
-      >
+      <button type="submit" disabled={loading} className="btn-admin-primary">
         {loading ? "Creando..." : "Crear capitulo"}
       </button>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-(--admin-danger)">{error}</p>}
     </form>
   );
 }

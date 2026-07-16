@@ -53,7 +53,7 @@ export default async function HomePage() {
       </section>
 
       <section id="novelas" className="mx-auto max-w-6xl px-6 py-16 sm:px-10">
-        <h2 className="section-title">Últimas novelas</h2>
+        <h2 className="section-title">Últimos escritos</h2>
 
         <div className="card-grid mt-10">
           {novels.map((novel) => (

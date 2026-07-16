@@ -20,18 +20,23 @@ export default async function NovelChaptersPage({
   if (!novel) notFound();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 space-y-8">
-      <div>
-        <Link href={`/admin/novels/${novel.id}/edit`} className="text-sm text-gray-500 underline">
-          Volver a {novel.title}
-        </Link>
-        <h1 className="mt-2 text-2xl font-semibold text-gray-900">
-          Capitulos de &quot;{novel.title}&quot;
-        </h1>
+    <div>
+      <Link href={`/admin/novels/${novel.id}/edit`} className="admin-link">
+        ← {novel.title}
+      </Link>
+      <h1 className="admin-page-title mt-3">Capitulos</h1>
+      <p className="admin-page-sub">{novel.chapters.length} capitulo(s).</p>
+
+      <div className="admin-card mt-8">
+        <p className="admin-label">Nuevo capitulo</p>
+        <div className="mt-3">
+          <ChapterQuickCreateForm novelId={novel.id} />
+        </div>
       </div>
 
-      <ChapterQuickCreateForm novelId={novel.id} />
-      <ChapterList novelId={novel.id} chapters={novel.chapters} />
+      <div className="admin-card mt-6">
+        <ChapterList novelId={novel.id} chapters={novel.chapters} />
+      </div>
     </div>
   );
 }

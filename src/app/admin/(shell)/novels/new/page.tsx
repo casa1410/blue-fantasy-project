@@ -5,9 +5,9 @@ export default async function NewNovelPage() {
   await requireAdminUser();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="text-2xl font-semibold text-gray-900">Nueva novela</h1>
-      <div className="mt-8">
+    <div>
+      <h1 className="admin-page-title">Nueva novela</h1>
+      <div className="admin-card mt-8 max-w-2xl">
         <NovelForm />
       </div>
     </div>

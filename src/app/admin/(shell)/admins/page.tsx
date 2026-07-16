@@ -8,14 +8,14 @@ export default async function AdminAdminsPage() {
   const admins = await prisma.adminProfile.findMany({ orderBy: { createdAt: "asc" } });
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-12">
-      <h1 className="text-2xl font-semibold text-gray-900">Administradores</h1>
-      <p className="mt-1 text-sm text-gray-500">
+    <div>
+      <h1 className="admin-page-title">Administradores</h1>
+      <p className="admin-page-sub max-w-xl">
         Debe haber siempre al menos 2 administradores, para que si uno pierde acceso, el otro
         pueda ayudarlo a recuperarlo.
       </p>
 
-      <div className="mt-8">
+      <div className="admin-card mt-8 max-w-2xl">
         <AdminList
           admins={admins.map((a) => ({
             id: a.id,

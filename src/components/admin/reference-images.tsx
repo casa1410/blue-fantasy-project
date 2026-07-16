@@ -43,25 +43,21 @@ export function ReferenceImages({
 
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-medium text-gray-900">Imagenes de referencia</h2>
+      <p className="admin-label">Imagenes de referencia</p>
 
       <form ref={formRef} action={handleUpload} className="flex flex-wrap items-center gap-3">
-        <input type="file" name="file" accept="image/*" required className="text-sm" />
+        <input type="file" name="file" accept="image/*" required className="text-sm text-(--admin-ink-soft)" />
         <input
           type="text"
           name="altText"
           placeholder="Descripcion (opcional)"
-          className="rounded-md border border-gray-300 px-2 py-1.5 text-sm"
+          className="admin-input w-auto"
         />
-        <button
-          type="submit"
-          disabled={loading}
-          className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50"
-        >
+        <button type="submit" disabled={loading} className="btn-admin-secondary">
           {loading ? "Subiendo..." : "Agregar imagen"}
         </button>
       </form>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-(--admin-danger)">{error}</p>}
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         {images.map((image) => (
@@ -70,20 +66,20 @@ export function ReferenceImages({
             <img
               src={image.url}
               alt={image.altText ?? ""}
-              className="h-32 w-full rounded object-cover"
+              className="h-32 w-full rounded-lg object-cover"
             />
             <button
               type="button"
               onClick={() => handleDelete(image.id)}
               disabled={deletingId === image.id}
-              className="text-xs font-medium text-red-600 underline disabled:opacity-50"
+              className="btn-admin-ghost-danger text-xs"
             >
               {deletingId === image.id ? "Borrando..." : "Borrar"}
             </button>
           </div>
         ))}
         {images.length === 0 && (
-          <p className="col-span-3 text-sm text-gray-500">Sin imagenes todavia.</p>
+          <p className="admin-empty col-span-3">Sin imagenes todavia.</p>
         )}
       </div>
     </div>

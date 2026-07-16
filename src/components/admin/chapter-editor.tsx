@@ -27,7 +27,8 @@ export function ChapterEditor({
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
     editorProps: {
       attributes: {
-        class: "prose max-w-none min-h-[300px] rounded-md border border-gray-300 px-3 py-2",
+        class:
+          "prose max-w-none min-h-[300px] rounded-lg border border-(--admin-border) bg-(--admin-surface) px-4 py-3 focus:outline-none",
       },
     },
   });
@@ -54,7 +55,7 @@ export function ChapterEditor({
 
   return (
     <div className="space-y-2">
-      <div className="flex flex-wrap items-center gap-2 rounded-md border border-gray-200 bg-gray-50 p-2">
+      <div className="flex flex-wrap items-center gap-2 rounded-lg border border-(--admin-border) bg-(--admin-bg) p-2">
         <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive("bold")}>
           Negrita
         </ToolbarButton>
@@ -77,7 +78,7 @@ export function ChapterEditor({
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
-          className="rounded px-2 py-1 text-sm text-gray-700 hover:bg-gray-200 disabled:opacity-50"
+          className="rounded-md px-2 py-1 text-sm text-(--admin-ink-soft) hover:bg-(--admin-accent-soft) hover:text-(--admin-accent) disabled:opacity-50"
         >
           {uploading ? "Subiendo..." : "Insertar imagen"}
         </button>
@@ -107,8 +108,10 @@ function ToolbarButton({
     <button
       type="button"
       onClick={onClick}
-      className={`rounded px-2 py-1 text-sm ${
-        active ? "bg-gray-900 text-white" : "text-gray-700 hover:bg-gray-200"
+      className={`rounded-md px-2 py-1 text-sm ${
+        active
+          ? "bg-(--admin-accent) text-white"
+          : "text-(--admin-ink-soft) hover:bg-(--admin-accent-soft) hover:text-(--admin-accent)"
       }`}
     >
       {children}
