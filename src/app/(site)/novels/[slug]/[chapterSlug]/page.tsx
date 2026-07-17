@@ -70,7 +70,7 @@ export default async function ChapterPage({
   const { novel, chapter, prevChapter, nextChapter } = data;
 
   return (
-    <main className="mx-auto max-w-2xl flex-1 px-6 py-16 sm:px-10">
+    <main className="mx-auto max-w-2xl flex-1 px-4 py-16 sm:px-10">
       <Link href={`/novels/${novel.slug}`} className="site-link text-sm">
         ← {novel.title}
       </Link>
