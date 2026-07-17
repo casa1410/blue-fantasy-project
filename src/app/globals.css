@@ -356,6 +356,53 @@ body {
   border: 1px solid var(--site-line);
 }
 
+.reader-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.reader-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.reader-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.reader-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--site-line);
+  background: var(--site-card-bg);
+  color: var(--site-ink-soft);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.reader-btn:hover {
+  border-color: var(--site-accent-2);
+  color: var(--site-ink);
+}
+
+.reader-btn.active {
+  border-color: var(--site-accent-2);
+  color: var(--site-accent-3);
+  background: rgb(90 166 255 / 0.12);
+}
+
 /* ---------------------------------------------------------------------- *
  * Admin panel theme — a calm, professional workspace. Light and separate
  * from the public site's dark identity; shares only the accent hue as a

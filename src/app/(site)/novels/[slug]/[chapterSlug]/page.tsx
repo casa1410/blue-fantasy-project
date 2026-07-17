@@ -3,6 +3,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { CommentForm } from "@/components/comment-form";
+import { ChapterArticle } from "@/components/chapter-article";
+import { ScrollToTopButton } from "@/components/scroll-buttons";
 
 export const dynamic = "force-dynamic";
 
@@ -85,31 +87,19 @@ export default async function ChapterPage({
         </div>
       )}
 
-      <article
-        className="prose prose-invert chapter-prose max-w-none"
-        dangerouslySetInnerHTML={{ __html: chapter.content }}
-      />
+      <ChapterArticle content={chapter.content} />
 
-      <nav className="mt-14 flex items-center justify-between gap-4 border-t border-(--site-line) pt-6">
-        {prevChapter ? (
-          <Link
-            href={`/novels/${novel.slug}/${prevChapter.slug}`}
-            className="site-link text-sm font-medium"
-          >
+      <nav className="reader-nav mt-14 border-t border-(--site-line) pt-6">
+        <ScrollToTopButton />
+        {prevChapter && (
+          <Link href={`/novels/${novel.slug}/${prevChapter.slug}`} className="reader-btn">
             ← {prevChapter.title}
           </Link>
-        ) : (
-          <span />
         )}
-        {nextChapter ? (
-          <Link
-            href={`/novels/${novel.slug}/${nextChapter.slug}`}
-            className="site-link text-sm font-medium"
-          >
+        {nextChapter && (
+          <Link href={`/novels/${novel.slug}/${nextChapter.slug}`} className="reader-btn">
             {nextChapter.title} →
           </Link>
-        ) : (
-          <span />
         )}
       </nav>
 
