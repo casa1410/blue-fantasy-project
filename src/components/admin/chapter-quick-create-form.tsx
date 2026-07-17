@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createChapter, uploadChapterCover } from "@/actions/chapters";
+import { validateImageFile } from "@/lib/image-constraints";
 
 export function ChapterQuickCreateForm({ novelId }: { novelId: string }) {
   const router = useRouter();
@@ -15,27 +16,43 @@ export function ChapterQuickCreateForm({ novelId }: { novelId: string }) {
     e.preventDefault();
     if (!title.trim()) return;
 
+    const coverFile = fileInputRef.current?.files?.[0];
+    if (coverFile) {
+      const validationError = validateImageFile(coverFile);
+      if (validationError) {
+        setError(validationError);
+        return;
+      }
+    }
+
     setLoading(true);
     setError(null);
+
+    let created: { id: string };
     try {
-      const created = await createChapter(novelId, {
+      created = await createChapter(novelId, {
         title,
         content: "<p></p>",
         status: "DRAFT",
       });
-
-      const coverFile = fileInputRef.current?.files?.[0];
-      if (coverFile) {
-        const formData = new FormData();
-        formData.set("file", coverFile);
-        await uploadChapterCover(novelId, created.id, formData);
-      }
-
-      router.push(`/admin/novels/${novelId}/chapters/${created.id}/edit`);
     } catch {
       setError("Ocurrio un error creando el capitulo.");
       setLoading(false);
+      return;
     }
+
+    if (coverFile) {
+      try {
+        const formData = new FormData();
+        formData.set("file", coverFile);
+        await uploadChapterCover(novelId, created.id, formData);
+      } catch {
+        // El capitulo ya se creo; solo fallo la portada. Se puede reintentar
+        // desde la pagina de edicion, a la que igual lo llevamos.
+      }
+    }
+
+    router.push(`/admin/novels/${novelId}/chapters/${created.id}/edit`);
   }
 
   return (

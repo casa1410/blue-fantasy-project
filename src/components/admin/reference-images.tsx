@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteReferenceImage, uploadReferenceImage } from "@/actions/images";
+import { validateImageFile } from "@/lib/image-constraints";
 
 type ImageItem = { id: string; url: string; altText: string | null };
 
@@ -20,6 +21,15 @@ export function ReferenceImages({
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   async function handleUpload(formData: FormData) {
+    const file = formData.get("file") as File | null;
+    if (file) {
+      const validationError = validateImageFile(file);
+      if (validationError) {
+        setError(validationError);
+        return;
+      }
+    }
+
     setLoading(true);
     setError(null);
     try {
@@ -27,7 +37,11 @@ export function ReferenceImages({
       formRef.current?.reset();
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error subiendo la imagen.");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Error subiendo la imagen. Si el archivo es grande, prueba con uno mas liviano.",
+      );
     } finally {
       setLoading(false);
     }

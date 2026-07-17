@@ -5,6 +5,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import { uploadChapterInlineImage } from "@/actions/chapters";
+import { validateImageFile } from "@/lib/image-constraints";
 
 export function ChapterEditor({
   novelId,
@@ -37,6 +38,13 @@ export function ChapterEditor({
     const file = e.target.files?.[0];
     if (!file || !editor) return;
 
+    const validationError = validateImageFile(file);
+    if (validationError) {
+      alert(validationError);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
     setUploading(true);
     try {
       const formData = new FormData();
@@ -44,7 +52,7 @@ export function ChapterEditor({
       const { url } = await uploadChapterInlineImage(novelId, chapterId, formData);
       editor.chain().focus().setImage({ src: url }).run();
     } catch {
-      alert("Error subiendo la imagen.");
+      alert("Error subiendo la imagen. Si el archivo es grande, prueba con uno mas liviano.");
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";

@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { removeChapterCover, uploadChapterCover } from "@/actions/chapters";
+import { validateImageFile } from "@/lib/image-constraints";
 
 export function ChapterCoverUpload({
   novelId,
@@ -19,6 +20,15 @@ export function ChapterCoverUpload({
   const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(formData: FormData) {
+    const file = formData.get("file") as File | null;
+    if (file) {
+      const validationError = validateImageFile(file);
+      if (validationError) {
+        setError(validationError);
+        return;
+      }
+    }
+
     setLoading(true);
     setError(null);
     try {
@@ -26,7 +36,11 @@ export function ChapterCoverUpload({
       formRef.current?.reset();
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Error subiendo la portada.");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Error subiendo la portada. Si el archivo es grande, prueba con uno mas liviano.",
+      );
     } finally {
       setLoading(false);
     }

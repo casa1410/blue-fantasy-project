@@ -1,18 +1,8 @@
 import { createSupabaseAdminClient } from "@/lib/supabase-admin";
 
-export const MEDIA_BUCKET = "public-media";
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-const MAX_SIZE_BYTES = 5 * 1024 * 1024;
+export { validateImageFile } from "@/lib/image-constraints";
 
-export function validateImageFile(file: File): string | null {
-  if (!ALLOWED_TYPES.includes(file.type)) {
-    return "Formato no permitido. Usa JPG, PNG, WEBP o GIF.";
-  }
-  if (file.size > MAX_SIZE_BYTES) {
-    return "La imagen supera el tamano maximo de 5MB.";
-  }
-  return null;
-}
+export const MEDIA_BUCKET = "public-media";
 
 export async function uploadImageFile(file: File, folder: string) {
   const supabase = createSupabaseAdminClient();
