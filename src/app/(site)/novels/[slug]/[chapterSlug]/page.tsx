@@ -87,7 +87,7 @@ export default async function ChapterPage({
         </div>
       )}
 
-      <ChapterArticle content={chapter.content} />
+      <ChapterArticle content={chapter.content} chapterId={chapter.id} />
 
       <nav className="reader-nav mt-14 border-t border-(--site-line) pt-6">
         <ScrollToTopButton />
