@@ -20,7 +20,7 @@ export function ChapterQuickCreateForm({ novelId }: { novelId: string }) {
     if (coverFile) {
       const validationError = validateImageFile(coverFile);
       if (validationError) {
-        setError(validationError);
+        alert(validationError);
         return;
       }
     }

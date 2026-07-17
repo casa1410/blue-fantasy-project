@@ -25,7 +25,7 @@ export function ReferenceImages({
     if (file) {
       const validationError = validateImageFile(file);
       if (validationError) {
-        setError(validationError);
+        alert(validationError);
         return;
       }
     }
