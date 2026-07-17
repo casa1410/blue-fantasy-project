@@ -44,15 +44,34 @@ export function ChapterArticle({
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setSize(storedSize);
     }
+  }, []);
 
-    const storedMark = localStorage.getItem(markKey(chapterId));
-    if (storedMark) {
-      const percent = Number(storedMark);
-      if (Number.isFinite(percent) && percent >= MARK_MIN_PERCENT && percent < MARK_DONE_PERCENT) {
-        setResumePercent(percent);
-        setBannerVisible(true);
+  useEffect(() => {
+    function checkMark() {
+      const storedMark = localStorage.getItem(markKey(chapterId));
+      if (storedMark) {
+        const percent = Number(storedMark);
+        if (
+          Number.isFinite(percent) &&
+          percent >= MARK_MIN_PERCENT &&
+          percent < MARK_DONE_PERCENT
+        ) {
+          setResumePercent(percent);
+          setBannerVisible(true);
+          return;
+        }
       }
+      setResumePercent(null);
+      setBannerVisible(false);
     }
+
+    checkMark();
+
+    // Browser back/forward (bfcache, or the router reusing a cached page
+    // instance) doesn't always remount this component, so the mount-time
+    // check above can miss it. "pageshow" fires in both cases.
+    window.addEventListener("pageshow", checkMark);
+    return () => window.removeEventListener("pageshow", checkMark);
   }, [chapterId]);
 
   useEffect(() => {
