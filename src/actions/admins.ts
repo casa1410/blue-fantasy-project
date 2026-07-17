@@ -40,6 +40,22 @@ export async function inviteAdmin(email: string) {
   return { tempPassword };
 }
 
+export async function resetAdminPassword(id: string) {
+  await requireAdminUser();
+
+  const admin = await prisma.adminProfile.findUniqueOrThrow({ where: { id } });
+
+  const tempPassword = generateTempPassword();
+  const supabase = createSupabaseAdminClient();
+  const { error } = await supabase.auth.admin.updateUserById(id, { password: tempPassword });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return { email: admin.email, tempPassword };
+}
+
 export async function removeAdmin(id: string) {
   const currentUser = await requireAdminUser();
 

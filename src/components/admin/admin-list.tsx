@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { inviteAdmin, removeAdmin } from "@/actions/admins";
+import { inviteAdmin, removeAdmin, resetAdminPassword } from "@/actions/admins";
 
 type AdminItem = { id: string; email: string; createdAt: string };
 
@@ -17,8 +17,11 @@ export function AdminList({
   const [email, setEmail] = useState("");
   const [inviting, setInviting] = useState(false);
   const [removingId, setRemovingId] = useState<string | null>(null);
+  const [resettingId, setResettingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [invited, setInvited] = useState<{ email: string; tempPassword: string } | null>(null);
+  const [generated, setGenerated] = useState<{ email: string; tempPassword: string } | null>(
+    null,
+  );
 
   const canRemove = admins.length > 2;
 
@@ -26,16 +29,31 @@ export function AdminList({
     e.preventDefault();
     setInviting(true);
     setError(null);
-    setInvited(null);
+    setGenerated(null);
     try {
       const { tempPassword } = await inviteAdmin(email);
-      setInvited({ email, tempPassword });
+      setGenerated({ email, tempPassword });
       setEmail("");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error invitando administrador.");
     } finally {
       setInviting(false);
+    }
+  }
+
+  async function handleReset(id: string, adminEmail: string) {
+    if (!confirm(`Generar una nueva contrasena temporal para ${adminEmail}?`)) return;
+    setResettingId(id);
+    setError(null);
+    setGenerated(null);
+    try {
+      const { tempPassword } = await resetAdminPassword(id);
+      setGenerated({ email: adminEmail, tempPassword });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error restableciendo contrasena.");
+    } finally {
+      setResettingId(null);
     }
   }
 
@@ -74,14 +92,13 @@ export function AdminList({
 
       {error && <p className="text-sm text-(--admin-danger)">{error}</p>}
 
-      {invited && (
+      {generated && (
         <div className="admin-callout">
           <p>
-            Se envio una invitacion por correo a <strong>{invited.email}</strong>, pero esos links
-            a veces no llegan a funcionar (Gmail los puede invalidar antes de que se abran).
-            Comparte esta contrasena temporal directamente como respaldo:
+            Contrasena temporal generada para <strong>{generated.email}</strong>. Comparteselo
+            directamente (no depende de correo):
           </p>
-          <p className="mt-2 font-mono text-base text-(--admin-ink)">{invited.tempPassword}</p>
+          <p className="mt-2 font-mono text-base text-(--admin-ink)">{generated.tempPassword}</p>
           <p className="mt-2 text-xs">
             Puede iniciar sesion con esta contrasena y cambiarla luego desde &quot;Mi cuenta&quot;.
           </p>
@@ -105,14 +122,26 @@ export function AdminList({
                 Desde {new Date(admin.createdAt).toLocaleDateString()}
               </p>
             </div>
-            <button
-              type="button"
-              onClick={() => handleRemove(admin.id, admin.email)}
-              disabled={!canRemove || admin.id === currentUserId || removingId === admin.id}
-              className="btn-admin-ghost-danger disabled:opacity-30"
-            >
-              {removingId === admin.id ? "Eliminando..." : "Eliminar"}
-            </button>
+            <div className="flex items-center gap-4">
+              {admin.id !== currentUserId && (
+                <button
+                  type="button"
+                  onClick={() => handleReset(admin.id, admin.email)}
+                  disabled={resettingId === admin.id}
+                  className="admin-link disabled:opacity-30"
+                >
+                  {resettingId === admin.id ? "Generando..." : "Restablecer contrasena"}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => handleRemove(admin.id, admin.email)}
+                disabled={!canRemove || admin.id === currentUserId || removingId === admin.id}
+                className="btn-admin-ghost-danger disabled:opacity-30"
+              >
+                {removingId === admin.id ? "Eliminando..." : "Eliminar"}
+              </button>
+            </div>
           </div>
         ))}
       </div>
