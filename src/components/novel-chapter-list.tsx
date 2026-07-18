@@ -41,8 +41,14 @@ export function NovelChapterList({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="section-title text-2xl">Capítulos</h2>
         {chapters.length > 1 && (
-          <button type="button" onClick={toggleOrder} className="reader-btn">
-            {newestFirst ? "Ver desde el capítulo 1" : "Ver más recientes primero"}
+          <button
+            type="button"
+            onClick={toggleOrder}
+            className="reader-btn"
+            aria-label={newestFirst ? "Ver desde el capítulo 1" : "Ver más recientes primero"}
+            title={newestFirst ? "Ver desde el capítulo 1" : "Ver más recientes primero"}
+          >
+            {newestFirst ? "↓" : "↑"}
           </button>
         )}
       </div>
