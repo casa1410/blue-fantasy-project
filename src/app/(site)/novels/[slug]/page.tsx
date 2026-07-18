@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import { NovelChapterList } from "@/components/novel-chapter-list";
 
 export const dynamic = "force-dynamic";
 
@@ -98,29 +99,10 @@ export default async function NovelPage({
         </div>
       )}
 
-      <div className="mt-14">
-        <h2 className="section-title text-2xl">Capítulos</h2>
-        <ul className="mt-5 divide-y divide-(--site-line) border-t border-(--site-line)">
-          {novel.chapters.map((chapter, index) => (
-            <li key={chapter.id}>
-              <Link
-                href={`/novels/${novel.slug}/${chapter.slug}`}
-                className="flex items-center justify-between py-4 text-(--site-ink-soft) transition-colors hover:text-(--site-accent-3)"
-              >
-                <span>
-                  {index + 1}. {chapter.title}
-                </span>
-                <span aria-hidden="true">→</span>
-              </Link>
-            </li>
-          ))}
-          {novel.chapters.length === 0 && (
-            <li className="py-4 text-sm text-(--site-ink-faint)">
-              Todavía no hay capítulos publicados.
-            </li>
-          )}
-        </ul>
-      </div>
+      <NovelChapterList
+        novelSlug={novel.slug}
+        chapters={novel.chapters.map((c) => ({ id: c.id, slug: c.slug, title: c.title }))}
+      />
     </main>
   );
 }
