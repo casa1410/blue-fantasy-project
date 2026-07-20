@@ -48,6 +48,7 @@ model Chapter {
   footer         String?
   order          Int
   status         ContentStatus @default(DRAFT)
+  publishedAt    DateTime?
   coverImageUrl  String?
   coverImagePath String?
   images         Image[]

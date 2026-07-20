@@ -3,8 +3,17 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-type ChapterItem = { id: string; slug: string; title: string };
+type ChapterItem = { id: string; slug: string; title: string; publishedAt: string | null };
 const STORAGE_KEY = "chapter-list-order";
+
+function formatDate(iso: string | null): string | null {
+  if (!iso) return null;
+  return new Date(iso).toLocaleDateString("es", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
 
 export function NovelChapterList({
   novelSlug,
@@ -58,12 +67,19 @@ export function NovelChapterList({
           <li key={chapter.id}>
             <Link
               href={`/novels/${novelSlug}/${chapter.slug}`}
-              className="flex items-center justify-between py-4 text-(--site-ink-soft) transition-colors hover:text-(--site-accent-3)"
+              className="flex items-center justify-between gap-4 py-4 text-(--site-ink-soft) transition-colors hover:text-(--site-accent-3)"
             >
               <span>
                 {chapter.number}. {chapter.title}
               </span>
-              <span aria-hidden="true">→</span>
+              <span className="flex items-center gap-3 whitespace-nowrap">
+                {formatDate(chapter.publishedAt) && (
+                  <span className="text-xs text-(--site-ink-faint)">
+                    {formatDate(chapter.publishedAt)}
+                  </span>
+                )}
+                <span aria-hidden="true">→</span>
+              </span>
             </Link>
           </li>
         ))}

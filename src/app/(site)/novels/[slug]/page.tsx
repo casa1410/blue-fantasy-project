@@ -101,7 +101,12 @@ export default async function NovelPage({
 
       <NovelChapterList
         novelSlug={novel.slug}
-        chapters={novel.chapters.map((c) => ({ id: c.id, slug: c.slug, title: c.title }))}
+        chapters={novel.chapters.map((c) => ({
+          id: c.id,
+          slug: c.slug,
+          title: c.title,
+          publishedAt: c.publishedAt ? c.publishedAt.toISOString() : null,
+        }))}
       />
     </main>
   );

@@ -44,6 +44,7 @@ export async function createChapter(novelId: string, values: ChapterFormValues) 
       title: data.title,
       content: data.content,
       status: data.status,
+      publishedAt: data.status === "PUBLISHED" ? new Date() : null,
       slug,
       order: (last?.order ?? 0) + 1,
     },
@@ -74,6 +75,8 @@ export async function updateChapter(
       content: data.content,
       footer: data.footer || null,
       status: data.status,
+      publishedAt:
+        data.status === "PUBLISHED" && !existing.publishedAt ? new Date() : existing.publishedAt,
       slug,
     },
   });
