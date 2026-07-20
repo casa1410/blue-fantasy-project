@@ -89,6 +89,12 @@ export default async function ChapterPage({
 
       <ChapterArticle content={chapter.content} chapterId={chapter.id} />
 
+      {chapter.footer && (
+        <div className="site-card mt-10 p-4">
+          <p className="whitespace-pre-wrap text-sm text-(--site-ink-soft)">{chapter.footer}</p>
+        </div>
+      )}
+
       <nav className="reader-nav mt-14 border-t border-(--site-line) pt-6">
         <ScrollToTopButton />
         {prevChapter && (

@@ -69,7 +69,13 @@ export async function updateChapter(
 
   await prisma.chapter.update({
     where: { id: chapterId },
-    data: { title: data.title, content: data.content, status: data.status, slug },
+    data: {
+      title: data.title,
+      content: data.content,
+      footer: data.footer || null,
+      status: data.status,
+      slug,
+    },
   });
 
   revalidatePath(`/admin/novels/${novelId}/chapters`);

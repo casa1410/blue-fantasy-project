@@ -45,6 +45,7 @@ model Chapter {
   title          String
   slug           String
   content        String
+  footer         String?
   order          Int
   status         ContentStatus @default(DRAFT)
   coverImageUrl  String?

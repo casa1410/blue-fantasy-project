@@ -7,13 +7,20 @@ import { ChapterEditor } from "@/components/admin/chapter-editor";
 
 type Props = {
   novelId: string;
-  chapter: { id: string; title: string; content: string; status: "DRAFT" | "PUBLISHED" };
+  chapter: {
+    id: string;
+    title: string;
+    content: string;
+    footer: string | null;
+    status: "DRAFT" | "PUBLISHED";
+  };
 };
 
 export function ChapterEditForm({ novelId, chapter }: Props) {
   const router = useRouter();
   const [title, setTitle] = useState(chapter.title);
   const [content, setContent] = useState(chapter.content);
+  const [footer, setFooter] = useState(chapter.footer ?? "");
   const [status, setStatus] = useState<"DRAFT" | "PUBLISHED">(chapter.status);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -24,7 +31,7 @@ export function ChapterEditForm({ novelId, chapter }: Props) {
     setSaving(true);
     setError(null);
     try {
-      await updateChapter(novelId, chapter.id, { title, content, status });
+      await updateChapter(novelId, chapter.id, { title, content, footer, status });
       router.refresh();
     } catch {
       setError("Ocurrio un error guardando el capitulo.");
@@ -65,6 +72,22 @@ export function ChapterEditForm({ novelId, chapter }: Props) {
         initialContent={content}
         onChange={setContent}
       />
+
+      <div>
+        <label htmlFor="footer" className="admin-label">
+          Pie de pagina (opcional)
+        </label>
+        <p className="mb-2 text-sm text-(--admin-ink-faint)">
+          Referencias, notas del autor u otra info extra. Se muestra al final del capitulo.
+        </p>
+        <textarea
+          id="footer"
+          rows={4}
+          value={footer}
+          onChange={(e) => setFooter(e.target.value)}
+          className="admin-textarea"
+        />
+      </div>
 
       {error && <p className="text-sm text-(--admin-danger)">{error}</p>}
 

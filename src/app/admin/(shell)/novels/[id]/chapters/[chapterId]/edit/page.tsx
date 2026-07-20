@@ -40,6 +40,7 @@ export default async function EditChapterPage({
             id: chapter.id,
             title: chapter.title,
             content: chapter.content,
+            footer: chapter.footer,
             status: chapter.status,
           }}
         />
