@@ -176,8 +176,27 @@ body {
 }
 
 .novel-cover {
+  position: relative;
   overflow: hidden;
   background: #0d1220;
+}
+
+.new-badge {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22c55e, #4ade80);
+  color: #06240f;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 6px 16px rgb(34 197 94 / 0.4);
 }
 
 .novel-cover img {

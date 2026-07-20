@@ -32,6 +32,22 @@ export default async function HomePage() {
     .filter((s): s is HeroSlide => s !== null)
     .slice(0, 8);
 
+  const NEW_CHAPTER_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+  // This page is force-dynamic (rendered fresh per request on the server),
+  // so reading the current time here is safe and intentional.
+  // eslint-disable-next-line react-hooks/purity
+  const now = Date.now();
+  const gridNovels = novels
+    .map((novel) => {
+      const latestChapterAt = novel.chapters[0]?.createdAt ?? null;
+      const lastActivityAt =
+        latestChapterAt && latestChapterAt > novel.updatedAt ? latestChapterAt : novel.updatedAt;
+      const isNewChapter =
+        latestChapterAt !== null && now - latestChapterAt.getTime() < NEW_CHAPTER_WINDOW_MS;
+      return { novel, lastActivityAt, isNewChapter };
+    })
+    .sort((a, b) => b.lastActivityAt.getTime() - a.lastActivityAt.getTime());
+
   return (
     <main className="flex-1">
       <section className="mx-auto flex max-w-6xl flex-col-reverse items-center gap-12 px-6 py-16 sm:px-10 lg:flex-row lg:justify-between lg:py-24">
@@ -56,9 +72,10 @@ export default async function HomePage() {
         <h2 className="section-title">Últimos escritos</h2>
 
         <div className="card-grid mt-10">
-          {novels.map((novel) => (
+          {gridNovels.map(({ novel, isNewChapter }) => (
             <Link key={novel.id} href={`/novels/${novel.slug}`} className="novel-card">
               <div className="novel-cover h-60">
+                {isNewChapter && <span className="new-badge">✓ Nuevo cap</span>}
                 {novel.coverImageUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={novel.coverImageUrl} alt={novel.title} />
