@@ -55,7 +55,7 @@ export default async function NovelPage({
       </Link>
 
       <div className="mt-6 flex flex-col gap-8 sm:flex-row">
-        <div className="novel-cover h-72 w-52 shrink-0 self-center rounded-xl shadow-xl shadow-black/40 sm:self-start">
+        <div className="novel-cover h-80 w-56 shrink-0 self-center rounded-xl shadow-xl shadow-black/40 sm:h-auto sm:max-h-120 sm:w-64 sm:self-stretch">
           {novel.coverImageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={novel.coverImageUrl} alt={novel.title} />

@@ -58,7 +58,7 @@ export default async function HomePage() {
         <div className="card-grid mt-10">
           {novels.map((novel) => (
             <Link key={novel.id} href={`/novels/${novel.slug}`} className="novel-card">
-              <div className="novel-cover">
+              <div className="novel-cover h-60">
                 {novel.coverImageUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={novel.coverImageUrl} alt={novel.title} />
