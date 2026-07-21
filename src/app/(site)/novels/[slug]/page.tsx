@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { NovelChapterList } from "@/components/novel-chapter-list";
+import { CoverLightbox } from "@/components/cover-lightbox";
 
 export const dynamic = "force-dynamic";
 
@@ -55,16 +56,19 @@ export default async function NovelPage({
       </Link>
 
       <div className="mt-6 flex flex-col gap-8 sm:flex-row">
-        <div className="novel-cover h-80 w-56 shrink-0 self-center rounded-xl shadow-xl shadow-black/40 sm:h-auto sm:max-h-120 sm:w-64 sm:self-stretch">
-          {novel.coverImageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={novel.coverImageUrl} alt={novel.title} />
-          ) : (
+        {novel.coverImageUrl ? (
+          <CoverLightbox
+            src={novel.coverImageUrl}
+            alt={novel.title}
+            triggerClassName="novel-cover novel-cover--contain h-80 w-56 shrink-0 self-center rounded-xl shadow-xl shadow-black/40 sm:h-auto sm:max-h-120 sm:w-64 sm:self-stretch"
+          />
+        ) : (
+          <div className="novel-cover h-80 w-56 shrink-0 self-center rounded-xl shadow-xl shadow-black/40 sm:h-auto sm:max-h-120 sm:w-64 sm:self-stretch">
             <div className="flex h-full w-full items-center justify-center bg-[#0d1220]">
               <span className="font-display text-sm text-(--site-ink-faint)">Sin portada</span>
             </div>
-          )}
-        </div>
+          </div>
+        )}
         <div>
           <h1 className="font-display text-3xl sm:text-4xl">{novel.title}</h1>
           {novel.genre && <span className="genre-pill mt-3 inline-block">{novel.genre}</span>}
