@@ -60,7 +60,7 @@ export default async function NovelPage({
           <CoverLightbox
             src={novel.coverImageUrl}
             alt={novel.title}
-            triggerClassName="novel-cover novel-cover--contain h-80 w-56 shrink-0 self-center rounded-xl shadow-xl shadow-black/40 sm:h-auto sm:max-h-120 sm:w-64 sm:self-stretch"
+            triggerClassName="novel-cover h-80 w-56 shrink-0 self-center rounded-xl shadow-xl shadow-black/40 sm:h-auto sm:max-h-120 sm:w-64 sm:self-stretch"
           />
         ) : (
           <div className="novel-cover h-80 w-56 shrink-0 self-center rounded-xl shadow-xl shadow-black/40 sm:h-auto sm:max-h-120 sm:w-64 sm:self-stretch">
