@@ -41,7 +41,7 @@ export function ChapterEditForm({ novelId, chapter }: Props) {
   }
 
   async function handleDelete() {
-    if (!confirm(`Borrar el capitulo "${title}"? Esta accion no se puede deshacer.`)) return;
+    if (!confirm(`Borrar el capitulo "${title}"? Se enviara a la papelera y podras recuperarlo dentro de los proximos 30 dias.`)) return;
     setDeleting(true);
     await deleteChapter(novelId, chapter.id);
     router.push(`/admin/novels/${novelId}/chapters`);

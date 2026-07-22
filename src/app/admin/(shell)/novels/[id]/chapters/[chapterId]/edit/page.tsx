@@ -14,7 +14,7 @@ export default async function EditChapterPage({
   const { id, chapterId } = await params;
 
   const chapter = await prisma.chapter.findFirst({
-    where: { id: chapterId, novelId: id },
+    where: { id: chapterId, novelId: id, deletedAt: null, novel: { deletedAt: null } },
   });
   if (!chapter) notFound();
 

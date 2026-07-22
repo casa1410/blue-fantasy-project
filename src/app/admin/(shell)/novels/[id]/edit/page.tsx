@@ -13,9 +13,13 @@ export default async function EditNovelPage({
   await requireAdminUser();
   const { id } = await params;
 
-  const novel = await prisma.novel.findUnique({
-    where: { id },
-    include: { _count: { select: { chapters: true, images: true } } },
+  const novel = await prisma.novel.findFirst({
+    where: { id, deletedAt: null },
+    include: {
+      _count: {
+        select: { chapters: { where: { deletedAt: null } }, images: true },
+      },
+    },
   });
   if (!novel) notFound();
 

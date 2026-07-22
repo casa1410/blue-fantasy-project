@@ -2,13 +2,17 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
 export default async function AdminDashboardPage() {
-  const [novelCount, publishedCount, chapterCount, pendingComments, adminCount] =
+  const [novelCount, publishedCount, chapterCount, pendingComments, adminCount, trashCount] =
     await Promise.all([
-      prisma.novel.count(),
-      prisma.novel.count({ where: { status: "PUBLISHED" } }),
-      prisma.chapter.count(),
+      prisma.novel.count({ where: { deletedAt: null } }),
+      prisma.novel.count({ where: { status: "PUBLISHED", deletedAt: null } }),
+      prisma.chapter.count({ where: { deletedAt: null } }),
       prisma.comment.count({ where: { status: "PENDING" } }),
       prisma.adminProfile.count(),
+      Promise.all([
+        prisma.novel.count({ where: { deletedAt: { not: null } } }),
+        prisma.chapter.count({ where: { deletedAt: { not: null } } }),
+      ]).then(([novels, chapters]) => novels + chapters),
     ]);
 
   const stats = [
@@ -22,6 +26,7 @@ export default async function AdminDashboardPage() {
       highlight: pendingComments > 0,
     },
     { label: "Administradores", value: adminCount, sub: "con acceso", href: "/admin/admins" },
+    { label: "Papelera", value: trashCount, sub: "por vencer en 30 dias", href: "/admin/trash" },
   ];
 
   return (

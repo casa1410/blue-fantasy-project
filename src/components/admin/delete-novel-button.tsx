@@ -9,7 +9,7 @@ export function DeleteNovelButton({ id, title }: { id: string; title: string }) 
   const [loading, setLoading] = useState(false);
 
   async function handleDelete() {
-    if (!confirm(`Borrar "${title}" y todos sus capitulos e imagenes? Esta accion no se puede deshacer.`)) {
+    if (!confirm(`Borrar "${title}" y todos sus capitulos e imagenes? Se enviara a la papelera y podras recuperarla dentro de los proximos 30 dias.`)) {
       return;
     }
     setLoading(true);

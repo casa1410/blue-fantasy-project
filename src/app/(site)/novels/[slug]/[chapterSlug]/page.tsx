@@ -10,10 +10,10 @@ export const dynamic = "force-dynamic";
 
 async function getChapterData(novelSlug: string, chapterSlug: string) {
   const novel = await prisma.novel.findFirst({
-    where: { slug: novelSlug, status: "PUBLISHED" },
+    where: { slug: novelSlug, status: "PUBLISHED", deletedAt: null },
     include: {
       chapters: {
-        where: { status: "PUBLISHED" },
+        where: { status: "PUBLISHED", deletedAt: null },
         orderBy: { order: "asc" },
         include: {
           comments: {

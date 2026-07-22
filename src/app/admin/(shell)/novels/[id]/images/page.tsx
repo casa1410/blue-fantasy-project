@@ -13,8 +13,8 @@ export default async function NovelImagesPage({
   await requireAdminUser();
   const { id } = await params;
 
-  const novel = await prisma.novel.findUnique({
-    where: { id },
+  const novel = await prisma.novel.findFirst({
+    where: { id, deletedAt: null },
     include: { images: { where: { chapterId: null }, orderBy: { createdAt: "desc" } } },
   });
   if (!novel) notFound();

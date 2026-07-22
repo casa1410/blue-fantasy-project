@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminUser } from "@/lib/auth";
 import { slugify } from "@/lib/slug";
 import { deleteImageFile, uploadImageFile, validateImageFile } from "@/lib/storage";
+import { hardDeleteChapter } from "@/lib/trash";
 import { chapterSchema, type ChapterFormValues } from "@/lib/validation/chapter";
 
 async function uniqueChapterSlug(
@@ -87,20 +88,22 @@ export async function updateChapter(
 
 export async function deleteChapter(novelId: string, chapterId: string) {
   await requireAdminUser();
-
-  const chapter = await prisma.chapter.findUniqueOrThrow({
-    where: { id: chapterId },
-    include: { images: true },
-  });
-
-  const paths = [chapter.coverImagePath, ...chapter.images.map((i) => i.storagePath)].filter(
-    (p): p is string => Boolean(p),
-  );
-
-  await prisma.chapter.delete({ where: { id: chapterId } });
-  await Promise.all(paths.map((path) => deleteImageFile(path)));
-
+  await prisma.chapter.update({ where: { id: chapterId }, data: { deletedAt: new Date() } });
   revalidatePath(`/admin/novels/${novelId}/chapters`);
+  revalidatePath("/admin/trash");
+}
+
+export async function restoreChapter(novelId: string, chapterId: string) {
+  await requireAdminUser();
+  await prisma.chapter.update({ where: { id: chapterId }, data: { deletedAt: null } });
+  revalidatePath(`/admin/novels/${novelId}/chapters`);
+  revalidatePath("/admin/trash");
+}
+
+export async function deleteChapterForever(chapterId: string) {
+  await requireAdminUser();
+  await hardDeleteChapter(chapterId);
+  revalidatePath("/admin/trash");
 }
 
 export async function moveChapter(
@@ -111,7 +114,7 @@ export async function moveChapter(
   await requireAdminUser();
 
   const chapters = await prisma.chapter.findMany({
-    where: { novelId },
+    where: { novelId, deletedAt: null },
     orderBy: { order: "asc" },
   });
 

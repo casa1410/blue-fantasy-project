@@ -9,10 +9,10 @@ export const dynamic = "force-dynamic";
 
 async function getNovel(slug: string) {
   return prisma.novel.findFirst({
-    where: { slug, status: "PUBLISHED" },
+    where: { slug, status: "PUBLISHED", deletedAt: null },
     include: {
       chapters: {
-        where: { status: "PUBLISHED" },
+        where: { status: "PUBLISHED", deletedAt: null },
         orderBy: { order: "asc" },
       },
       images: { where: { chapterId: null }, orderBy: { createdAt: "desc" } },

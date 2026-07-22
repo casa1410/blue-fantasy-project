@@ -32,6 +32,7 @@ model Novel {
   genre         String?
   tags          String[]      @default([])
   status        ContentStatus @default(DRAFT)
+  deletedAt     DateTime?
   chapters      Chapter[]
   images        Image[]
   createdAt     DateTime      @default(now())
@@ -49,6 +50,7 @@ model Chapter {
   order          Int
   status         ContentStatus @default(DRAFT)
   publishedAt    DateTime?
+  deletedAt      DateTime?
   coverImageUrl  String?
   coverImagePath String?
   images         Image[]

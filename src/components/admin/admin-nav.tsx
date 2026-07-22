@@ -8,6 +8,7 @@ const LINKS = [
   { href: "/admin/novels", label: "Novelas" },
   { href: "/admin/comments", label: "Comentarios" },
   { href: "/admin/admins", label: "Administradores" },
+  { href: "/admin/trash", label: "Papelera" },
   { href: "/admin/account", label: "Mi cuenta" },
 ];
 

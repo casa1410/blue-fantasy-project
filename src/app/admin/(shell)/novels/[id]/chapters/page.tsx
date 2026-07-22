@@ -13,9 +13,9 @@ export default async function NovelChaptersPage({
   await requireAdminUser();
   const { id } = await params;
 
-  const novel = await prisma.novel.findUnique({
-    where: { id },
-    include: { chapters: { orderBy: { order: "asc" } } },
+  const novel = await prisma.novel.findFirst({
+    where: { id, deletedAt: null },
+    include: { chapters: { where: { deletedAt: null }, orderBy: { order: "asc" } } },
   });
   if (!novel) notFound();
 

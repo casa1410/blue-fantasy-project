@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminUser } from "@/lib/auth";
 import { slugify } from "@/lib/slug";
-import { deleteImageFile } from "@/lib/storage";
+import { hardDeleteNovel } from "@/lib/trash";
 import { novelSchema, type NovelFormValues } from "@/lib/validation/novel";
 
 function parseTags(tags: string | undefined): string[] {
@@ -77,21 +77,20 @@ export async function updateNovel(id: string, values: NovelFormValues) {
 
 export async function deleteNovel(id: string) {
   await requireAdminUser();
-
-  const novel = await prisma.novel.findUniqueOrThrow({
-    where: { id },
-    include: { images: true, chapters: { include: { images: true } } },
-  });
-
-  const paths = [
-    novel.coverImagePath,
-    ...novel.images.map((i) => i.storagePath),
-    ...novel.chapters.map((c) => c.coverImagePath),
-    ...novel.chapters.flatMap((c) => c.images.map((i) => i.storagePath)),
-  ].filter((p): p is string => Boolean(p));
-
-  await prisma.novel.delete({ where: { id } });
-  await Promise.all(paths.map((path) => deleteImageFile(path)));
-
+  await prisma.novel.update({ where: { id }, data: { deletedAt: new Date() } });
   revalidatePath("/admin/novels");
+  revalidatePath("/admin/trash");
+}
+
+export async function restoreNovel(id: string) {
+  await requireAdminUser();
+  await prisma.novel.update({ where: { id }, data: { deletedAt: null } });
+  revalidatePath("/admin/novels");
+  revalidatePath("/admin/trash");
+}
+
+export async function deleteNovelForever(id: string) {
+  await requireAdminUser();
+  await hardDeleteNovel(id);
+  revalidatePath("/admin/trash");
 }

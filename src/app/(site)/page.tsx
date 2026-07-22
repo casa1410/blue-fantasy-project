@@ -6,11 +6,11 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const novels = await prisma.novel.findMany({
-    where: { status: "PUBLISHED" },
+    where: { status: "PUBLISHED", deletedAt: null },
     orderBy: { updatedAt: "desc" },
     include: {
       chapters: {
-        where: { status: "PUBLISHED" },
+        where: { status: "PUBLISHED", deletedAt: null },
         orderBy: { createdAt: "desc" },
         take: 1,
       },

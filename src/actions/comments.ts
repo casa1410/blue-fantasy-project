@@ -31,7 +31,12 @@ export async function submitComment(
   }
 
   const chapter = await prisma.chapter.findFirst({
-    where: { slug: chapterSlug, status: "PUBLISHED", novel: { slug: novelSlug, status: "PUBLISHED" } },
+    where: {
+      slug: chapterSlug,
+      status: "PUBLISHED",
+      deletedAt: null,
+      novel: { slug: novelSlug, status: "PUBLISHED", deletedAt: null },
+    },
     select: { id: true },
   });
   if (!chapter) {

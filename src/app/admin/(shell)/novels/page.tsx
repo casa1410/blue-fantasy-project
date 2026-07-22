@@ -6,8 +6,9 @@ export default async function AdminNovelsPage() {
   await requireAdminUser();
 
   const novels = await prisma.novel.findMany({
+    where: { deletedAt: null },
     orderBy: { updatedAt: "desc" },
-    include: { _count: { select: { chapters: true } } },
+    include: { _count: { select: { chapters: { where: { deletedAt: null } } } } },
   });
 
   return (
