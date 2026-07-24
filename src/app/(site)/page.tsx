@@ -12,25 +12,28 @@ export default async function HomePage() {
       chapters: {
         where: { status: "PUBLISHED", deletedAt: null },
         orderBy: { createdAt: "desc" },
-        take: 1,
       },
     },
   });
 
-  const slides: HeroSlide[] = novels
-    .map((novel): HeroSlide | null => {
-      const latestChapter = novel.chapters[0];
-      const imageUrl = latestChapter?.coverImageUrl ?? novel.coverImageUrl;
-      if (!latestChapter || !imageUrl) return null;
-      return {
-        href: `/novels/${novel.slug}/${latestChapter.slug}`,
-        imageUrl,
-        novelTitle: novel.title,
-        chapterTitle: latestChapter.title,
-      };
-    })
-    .filter((s): s is HeroSlide => s !== null)
+  const slideCandidates = novels
+    .flatMap((novel) =>
+      novel.chapters.map((chapter) => {
+        const imageUrl = chapter.coverImageUrl ?? novel.coverImageUrl;
+        if (!imageUrl) return null;
+        const slide: HeroSlide = {
+          href: `/novels/${novel.slug}/${chapter.slug}`,
+          imageUrl,
+          novelTitle: novel.title,
+          chapterTitle: chapter.title,
+        };
+        return { slide, createdAt: chapter.createdAt };
+      }),
+    )
+    .filter((s): s is { slide: HeroSlide; createdAt: Date } => s !== null)
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
     .slice(0, 8);
+  const slides: HeroSlide[] = slideCandidates.map((c) => c.slide);
 
   const NEW_CHAPTER_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
   // This page is force-dynamic (rendered fresh per request on the server),
