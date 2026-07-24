@@ -23,9 +23,12 @@ export default async function AdminCommentsPage({
     : "PENDING";
 
   const comments = await prisma.comment.findMany({
-    where: { status: activeStatus },
+    where: { status: activeStatus, parentId: null },
     orderBy: { createdAt: "desc" },
-    include: { chapter: { include: { novel: true } } },
+    include: {
+      chapter: { include: { novel: true } },
+      replies: { orderBy: { createdAt: "asc" } },
+    },
   });
 
   return (
@@ -61,6 +64,12 @@ export default async function AdminCommentsPage({
               createdAt: comment.createdAt.toISOString(),
               chapterTitle: comment.chapter.title,
               novelTitle: comment.chapter.novel.title,
+              replies: comment.replies.map((reply) => ({
+                id: reply.id,
+                authorName: reply.authorName,
+                body: reply.body,
+                createdAt: reply.createdAt.toISOString(),
+              })),
             }}
           />
         ))}

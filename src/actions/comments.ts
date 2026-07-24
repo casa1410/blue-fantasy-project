@@ -77,3 +77,33 @@ export async function updateCommentStatus(commentId: string, status: CommentStat
   revalidatePath("/admin/comments");
   revalidatePath(`/novels/${comment.chapter.novel.slug}/${comment.chapter.slug}`);
 }
+
+export async function replyToComment(commentId: string, authorName: string, body: string) {
+  const admin = await requireAdminUser();
+
+  const parsedBody = body.trim();
+  const parsedName = authorName.trim();
+  if (!parsedBody || !parsedName) {
+    throw new Error("El nombre y la respuesta son obligatorios.");
+  }
+
+  const parent = await prisma.comment.findUniqueOrThrow({
+    where: { id: commentId },
+    include: { chapter: { include: { novel: true } } },
+  });
+
+  await prisma.comment.create({
+    data: {
+      chapterId: parent.chapterId,
+      parentId: parent.id,
+      authorName: parsedName,
+      authorEmail: admin.email ?? "",
+      body: parsedBody,
+      status: "APPROVED",
+      isAuthorReply: true,
+    },
+  });
+
+  revalidatePath("/admin/comments");
+  revalidatePath(`/novels/${parent.chapter.novel.slug}/${parent.chapter.slug}`);
+}

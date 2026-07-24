@@ -17,8 +17,14 @@ async function getChapterData(novelSlug: string, chapterSlug: string) {
         orderBy: { order: "asc" },
         include: {
           comments: {
-            where: { status: "APPROVED" },
+            where: { status: "APPROVED", parentId: null },
             orderBy: { createdAt: "asc" },
+            include: {
+              replies: {
+                where: { status: "APPROVED" },
+                orderBy: { createdAt: "asc" },
+              },
+            },
           },
         },
       },
@@ -121,6 +127,20 @@ export default async function ChapterPage({
               <p className="mt-1 text-sm whitespace-pre-wrap text-(--site-ink-soft)">
                 {comment.body}
               </p>
+              {comment.replies.length > 0 && (
+                <ul className="mt-4 space-y-3 border-l-2 border-(--site-line) pl-4">
+                  {comment.replies.map((reply) => (
+                    <li key={reply.id}>
+                      <p className="text-sm font-medium text-(--site-accent)">
+                        {reply.authorName} <span className="font-normal">· Autor</span>
+                      </p>
+                      <p className="mt-1 text-sm whitespace-pre-wrap text-(--site-ink-soft)">
+                        {reply.body}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))}
           {chapter.comments.length === 0 && (

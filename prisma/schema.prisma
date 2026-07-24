@@ -74,15 +74,19 @@ model Image {
 }
 
 model Comment {
-  id          String        @id @default(cuid())
-  chapter     Chapter       @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  chapterId   String
-  authorName  String
-  authorEmail String
-  body        String
-  status      CommentStatus @default(PENDING)
-  ipHash      String?
-  createdAt   DateTime      @default(now())
+  id            String        @id @default(cuid())
+  chapter       Chapter       @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapterId     String
+  authorName    String
+  authorEmail   String
+  body          String
+  status        CommentStatus @default(PENDING)
+  ipHash        String?
+  isAuthorReply Boolean       @default(false)
+  parent        Comment?      @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  parentId      String?
+  replies       Comment[]     @relation("CommentReplies")
+  createdAt     DateTime      @default(now())
 }
 
 model AdminProfile {
