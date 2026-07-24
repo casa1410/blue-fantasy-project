@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { HeroCarousel, type HeroSlide } from "@/components/hero-carousel";
 
 export const dynamic = "force-dynamic";
 
@@ -16,24 +15,27 @@ export default async function HomePage() {
     },
   });
 
-  const slideCandidates = novels
-    .flatMap((novel) =>
-      novel.chapters.map((chapter) => {
+  const heroCandidates = novels.flatMap((novel) =>
+    novel.chapters
+      .map((chapter) => {
         const imageUrl = chapter.coverImageUrl ?? novel.coverImageUrl;
         if (!imageUrl) return null;
-        const slide: HeroSlide = {
+        return {
           href: `/novels/${novel.slug}/${chapter.slug}`,
           imageUrl,
           novelTitle: novel.title,
           chapterTitle: chapter.title,
         };
-        return { slide, createdAt: chapter.createdAt };
-      }),
-    )
-    .filter((s): s is { slide: HeroSlide; createdAt: Date } => s !== null)
-    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-    .slice(0, 8);
-  const slides: HeroSlide[] = slideCandidates.map((c) => c.slide);
+      })
+      .filter((s): s is NonNullable<typeof s> => s !== null),
+  );
+  // Picking a random cover on each request is intentional: this page is
+  // force-dynamic, so a fresh pick per visit is the point, not a purity bug.
+  const heroSlide =
+    heroCandidates.length > 0
+      ? // eslint-disable-next-line react-hooks/purity
+        heroCandidates[Math.floor(Math.random() * heroCandidates.length)]
+      : null;
 
   const NEW_CHAPTER_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
   // This page is force-dynamic (rendered fresh per request on the server),
@@ -67,7 +69,26 @@ export default async function HomePage() {
         </div>
 
         <div className="w-80 shrink-0 shadow-2xl shadow-black/50 sm:w-100">
-          <HeroCarousel slides={slides} />
+          {heroSlide ? (
+            <Link href={heroSlide.href} className="hero-cover block">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={heroSlide.imageUrl}
+                alt={heroSlide.novelTitle}
+                className="h-full w-full object-contain"
+              />
+              <div className="hero-slide-caption">
+                <p className="font-display text-sm">{heroSlide.novelTitle}</p>
+                <p className="text-xs">{heroSlide.chapterTitle}</p>
+              </div>
+            </Link>
+          ) : (
+            <div className="hero-cover flex items-center justify-center bg-linear-to-br from-[#121830] to-[#070b14]">
+              <span className="font-display text-lg text-(--site-ink-faint)">
+                BlueFantasyProject
+              </span>
+            </div>
+          )}
         </div>
       </section>
 
